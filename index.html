@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>bee</title>
+</head>
+<body>
+<script src="./dist/bee.js"></script>
+<script>
+  let { env } = Bee;
+  console.log('android', env.isAndroid());
+  console.log('ios', env.isIOS());
+  console.log('wechat', env.isWeChat());
+  console.log('cosmeapp', env.isCosmeapp());
+  console.log('window', env.isBroswer());
+</script>
+</body>
+</html>
