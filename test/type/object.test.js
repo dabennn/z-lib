@@ -1,4 +1,4 @@
-const { isObject, isEmptyObject, isEmptyObjectLike } = require('../../dist/bee');
+const { isObject, isEmptyObject, isEmptyObjectLike } = require('../../dist/z');
 const should = require('should');
 
 describe('determine object type', function () {
@@ -28,4 +28,3 @@ describe('determine object type', function () {
     isEmptyObjectLike(undefined).should.be.false();
   });
 })
-

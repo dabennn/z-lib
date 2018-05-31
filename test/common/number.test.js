@@ -1,4 +1,4 @@
-const { random } = require('../../dist/bee');
+const { random } = require('../../dist/z');
 const should = require('should');
 
 should.use(function(should, Assertion) {
@@ -29,4 +29,3 @@ describe('common number methods', function () {
     }
   });
 })
-

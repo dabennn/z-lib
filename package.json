@@ -1,10 +1,10 @@
 {
-  "name": "bee",
+  "name": "Z",
   "version": "0.1.0",
   "description": "a common methods lib",
-  "main": "dist/bee.js",
+  "main": "dist/z.js",
   "keywords": [
-    "bee"
+    "Z"
   ],
   "scripts": {
     "dev": "NODE_ENV=dev rollup -c build/rollup.config.dev.js -w",

@@ -1,4 +1,4 @@
-const { isArray, isEmptyArray } = require('../../dist/bee');
+const { isArray, isEmptyArray } = require('../../dist/z');
 const should = require('should');
 
 describe('determine array type', function () {
@@ -16,4 +16,3 @@ describe('determine array type', function () {
     isEmptyArray(a).should.be.false();
   });
 })
-

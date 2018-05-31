@@ -5,7 +5,7 @@ const {
   trimEnd,
   camelCase,
   capitalize,
-} = require('../../dist/bee');
+} = require('../../dist/z');
 const should = require('should');
 
 describe('common string methods', function () {
@@ -29,4 +29,3 @@ describe('common string methods', function () {
     capitalize('  a BCD  ').should.be.a.String().and.be.eql('A bcd');
   });
 })
-

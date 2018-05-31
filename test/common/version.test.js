@@ -1,4 +1,4 @@
-const { versionCompare } = require('../../dist/bee');
+const { versionCompare } = require('../../dist/z');
 const should = require('should');
 
 describe('compare version', function () {
@@ -117,4 +117,3 @@ describe('compare version', function () {
     versionCompare('9.2.1', '<=', '9.1.2').should.be.false();
   });
 })
-

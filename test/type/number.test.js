@@ -1,4 +1,4 @@
-const { isNumber, isFloatNumber, isEvenNumber } = require('../../dist/bee');
+const { isNumber, isFloatNumber, isEvenNumber } = require('../../dist/z');
 const should = require('should');
 
 describe('determine number type', function () {
@@ -25,4 +25,3 @@ describe('determine number type', function () {
     isEvenNumber(0).should.be.true();
   });
 })
-

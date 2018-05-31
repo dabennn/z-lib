@@ -5,9 +5,9 @@ import resolve from 'rollup-plugin-node-resolve';
 export default {
   input: 'src/index.js',
   output: {
-    file: 'dist/bee.js',
+    file: 'dist/z.js',
     format: 'umd',
-    name: 'Bee'
+    name: 'Z'
   },
   plugins: [
     resolve(),

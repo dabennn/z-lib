@@ -1,4 +1,4 @@
-const { list, randomItem } = require('../../dist/bee');
+const { list, randomItem } = require('../../dist/z');
 const should = require('should');
 
 describe('common array methods', function () {
@@ -16,4 +16,3 @@ describe('common array methods', function () {
     }
   });
 })
-

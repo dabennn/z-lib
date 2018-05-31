@@ -1,4 +1,4 @@
-const { is } = require('../../dist/bee');
+const { is } = require('../../dist/z');
 const should = require('should');
 
 describe('test method \'is\'', function () {
