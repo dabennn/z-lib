@@ -63,5 +63,5 @@ export function camelCase(str) {
  * @return   {String}                        new string
  */
 export function capitalize(str) {
-  return firstUpper(str.toLowerCase());
+  return firstUpper(trim(str).toLowerCase());
 };

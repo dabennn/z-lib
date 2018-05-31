@@ -16,7 +16,7 @@ import {
  */
 export function list(length = 0, fn = () => {}) {
   if (isNumber(fn)) {
-    fn = () => fn;
+    fn = new Function(`return ${fn}`);
   }
   if (!is(fn, 'Function')) {
     throw new TypeError('Expected a Function');

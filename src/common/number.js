@@ -1,4 +1,4 @@
-import { isNumber } from '../type/index';
+import { is, isNumber } from '../type/index';
 
 /**
  * 生成一定范围内的随机数
@@ -20,7 +20,7 @@ export function random(start = 0, end, int = false) {
     end = start;
     start = 0;
   }
-  if (arguments.length === 2 && isNumber(start)) {
+  if (is(end, 'Boolean')) {
     int = end;
     end = start;
     start = 0;
