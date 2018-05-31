@@ -1,5 +1,7 @@
 import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
+import commonjs from 'rollup-plugin-commonjs';
+import resolve from 'rollup-plugin-node-resolve';
 
 export default [{
   input: 'src/index.js',
@@ -9,6 +11,8 @@ export default [{
     name: 'Bee'
   },
   plugins: [
+    resolve(),
+    commonjs(),
     babel({
       exclude: 'node_modules/**'
     })
@@ -19,7 +23,7 @@ export default [{
     {
       file: 'dist/bee.min.js',
       format: 'umd',
-      name: 'Tick'
+      name: 'Bee'
     },
     {
       file: 'dist/bee.cjs.min.js',
@@ -28,7 +32,7 @@ export default [{
     {
       file: 'dist/bee.iife.min.js',
       format: 'iife',
-      name: 'Tick'
+      name: 'Bee'
     },
     {
       file: 'dist/bee.esm.min.js',
@@ -36,6 +40,8 @@ export default [{
     }
   ],
   plugins: [
+    resolve(),
+    commonjs(),
     babel({
       exclude: 'node_modules/**',
       plugins: [
