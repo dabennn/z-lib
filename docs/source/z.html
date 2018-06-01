@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">(function (global, factory) {
+  typeof exports === &#39;object&#39; &amp;&amp; typeof module !== &#39;undefined&#39; ? factory(exports) :
+  typeof define === &#39;function&#39; &amp;&amp; define.amd ? define([&#39;exports&#39;], factory) :
+  (factory((global.Z = {})));
+}(this, (function (exports) { &#39;use strict&#39;;
+
+<span id='global-method-wxPreviewImage'>  /**
+</span>   * 微信图片预览
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param     {Object|String}            params
+   * @param     {String} [params.current]  需要显示的图片的url
+   * @param     {Array} [params.images]  所有图片的数组
+   * @return   {Boolean}               成功为true, 失败为false
+   *
+   *    @example
+   *    wxPreviewImage({
+   *      current: &#39;http://xxxxxx.xxx.xxxx&#39;,
+   *      images: [&#39;http://xxxxx.xxxx.xxx&#39;, &#39;http://xxx.xxxx.xxxx&#39;]
+   *    })
+   */
+  function wxPreviewImage() {
+    var params = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : {};
+
+    var current = void 0;
+    var images = [];
+
+    if (typeof params === &#39;string&#39;) {
+      current = params;
+      images = [current];
+    } else {
+      current = params.current;
+      images = params.images.map(function (val) {
+        return val.image_url;
+      });
+    }
+    if (typeof WeixinJSBridge === &#39;undefined&#39;) {
+      return false;
+    }
+
+    if (!current || !images) {
+      return false;
+    }
+    wx.previewImage({
+      current: current,
+      urls: images
+    });
+
+    return true;
+  }
+
+<span id='global-cfg-env'>  /**
+</span>   * 判断环境
+   * @cfg {Object} env
+   * @cfg {Function} [env.isWeChat] 判断是否微信ua
+   * @cfg {Function} [env.isCosmeapp] 判断是否App ua
+   * @cfg {Function} [env.isIOS] 判断是否ios ua
+   * @cfg {Function} [env.isAndroid] 判断是否安卓ua
+   * @cfg {Function} [env.isUC] 判断是否uc浏览器ua
+   * @cfg {Function} [env.isBroswer] 判断是否是浏览器环境
+   */
+  var env = {
+    isWeChat: function isWeChat() {
+      return (/MicroMessenger/i.test(navigator.userAgent)
+      );
+    },
+    isCosmeapp: function isCosmeapp() {
+      return (/Cosmeapp/i.test(navigator.userAgent)
+      );
+    },
+    isIOS: function isIOS() {
+      return (/\(i[^;]+;( U;)? CPU.+Mac OS X/i.test(navigator.userAgent)
+      );
+    },
+    isAndroid: function isAndroid() {
+      return (/Android/.test(navigator.userAgent) || /Linux/.test(navigator.userAgent)
+      );
+    },
+    isUC: function isUC() {
+      return (/UCBrowser/i.test(navigator.userAgent)
+      );
+    },
+    isBroswer: function isBroswer() {
+      return typeof window !== &#39;undefined&#39;;
+    }
+  };
+
+<span id='global-method-is'>  /**
+</span>   * 判断类型
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                        o     The value to check.
+   * @param    {String}                   type  type string, like &#39;Number&#39;, &#39;Object&#39;
+   * @return   {Boolean}                  true if the vaule is same as &#39;type string&#39;, else false.
+   */
+  function is(o, type) {
+    return Object.prototype.toString.call(o) === &#39;[object &#39; + type + &#39;]&#39;;
+  }
+
+  var _typeof = typeof Symbol === &quot;function&quot; &amp;&amp; typeof Symbol.iterator === &quot;symbol&quot; ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj &amp;&amp; typeof Symbol === &quot;function&quot; &amp;&amp; obj.constructor === Symbol &amp;&amp; obj !== Symbol.prototype ? &quot;symbol&quot; : typeof obj;
+  };
+
+  var toConsumableArray = function (arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i &lt; arr.length; i++) arr2[i] = arr[i];
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  };
+
+<span id='global-method-isEmptyObjectLike'>  /**
+</span>   * 是否是空对象或类对象
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                   obj  The value to check.
+   * @return   {Boolean}             &#39;true&#39; if value is emptyObjectLike, else &#39;false&#39;.
+   */
+  function isEmptyObjectLike(obj) {
+    if ((typeof obj === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(obj)) !== &#39;object&#39; || obj === null) {
+      return false;
+    }
+    for (var p in obj) {
+      return false;
+    }
+    return true;
+  }
+<span id='global-method-isObject'>  /**
+</span>   * 是否是对象
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                   obj  The value to check.
+   * @return   {Boolean}             &#39;true&#39; if value is Object, else &#39;false&#39;.
+   */
+  function isObject(obj) {
+    return is(obj, &#39;Object&#39;);
+  }
+<span id='global-method-isEmptyObject'>  /**
+</span>   * 是否是空对象
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                   obj  The value to check.
+   * @return   {Boolean}             &#39;true&#39; if value is emptyObject, else &#39;false&#39;.
+   */
+  function isEmptyObject(obj) {
+    return isObject(obj) &amp;&amp; isEmptyObjectLike(obj);
+  }
+
+<span id='global-method-isArray'>  /**
+</span>   * 是否是数组
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                   arr  The value to check.
+   * @return   {Boolean}             &#39;true&#39; if the value is Array, else &#39;false&#39;.
+   */
+  var isArray = Array.isArray || function (arr) {
+    return is(arr, &#39;Array&#39;);
+  };
+
+<span id='global-method-isEmptyArray'>  /**
+</span>   * 是否是空数组
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                   arr The value to check.
+   * @return   {Boolean}             &#39;true&#39; if the value is emptyArray, else &#39;false&#39;.
+   */
+  function isEmptyArray(arr) {
+    return isArray(arr) &amp;&amp; isEmptyObjectLike(arr);
+  }
+
+<span id='global-method-isNumber'>  /**
+</span>   * 是否是数字
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                   num  The value to check.
+   * @return   {Boolean}             &#39;true&#39; if the value is Number, else &#39;false&#39;.
+   */
+  function isNumber(num) {
+    return is(num, &#39;Number&#39;);
+  }
+<span id='global-method-isFloatNumber'>  /**
+</span>   * 是否是浮点数
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                   num  The value to check.
+   * @return   {Boolean}             &#39;true&#39; if the value is floatNumber, else &#39;false&#39;.
+   */
+  function isFloatNumber(num) {
+    return isNumber(num) &amp;&amp; num !== parseInt(num, 10);
+  }
+<span id='global-method-isEvenNumber'>  /**
+</span>   * 是否是偶数
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                   num  The value to check.
+   * @return   {Boolean}             &#39;true&#39; if the value is evenNumber, else &#39;false&#39;.
+   */
+  function isEvenNumber(num) {
+    return isNumber(num) &amp;&amp; !(num % 2);
+  }
+
+<span id='global-method-firstUpper'>  /**
+</span>   * 首字母大写
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {String}                   str  string to handle
+   * @return   {String}                        new string
+   */
+  function firstUpper(str) {
+    return str.replace(/^[a-zA-Z]/, function (s) {
+      return s.toUpperCase();
+    });
+  }
+<span id='global-method-trim'>  /**
+</span>   * 去除字符串头尾空格
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {String}                   str  string to transform
+   * @return   {String}                        new string
+   */
+  function trim(str) {
+    return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, &#39;&#39;);
+  }
+<span id='global-method-trimStart'>  /**
+</span>   * 去除字符串头部空格
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {String}                   str  string to transform
+   * @return   {String}                        new string
+   */
+  function trimStart(str) {
+    return str.replace(/^[\s\uFEFF\xA0]+/, &#39;&#39;);
+  }
+<span id='global-method-trimEnd'>  /**
+</span>   * 去除字符串尾部空格
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {String}                   str  string to transform
+   * @return   {String}                        new string
+   */
+  function trimEnd(str) {
+    return str.replace(/[\s\uFEFF\xA0]+$/, &#39;&#39;);
+  }
+<span id='global-method-camelCase'>  /**
+</span>   * 转换字符串为驼峰命名法
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {String}                   str  string to transform
+   * @return   {String}                        new string
+   */
+  function camelCase(str) {
+    return trim(str).replace(/([^\w]|_)+([a-z])/g, function (s, s1, s2) {
+      return s2.toUpperCase();
+    }).replace(/[^\w]|_/g, &#39;&#39;);
+  }
+<span id='global-method-capitalize'>  /**
+</span>   * 转换字符串为首字母大写形式
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {String}                   str  string to transform
+   * @return   {String}                        new string
+   */
+  function capitalize(str) {
+    return firstUpper(trim(str).toLowerCase());
+  }
+
+<span id='global-method-random'>  /**
+</span>   * 生成一定范围内的随机数
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {Number}                   start  start of range
+   * @param    {Number}                   end    end of range
+   * @param    {Boolean}                  int    result is int if true, else is float
+   *
+   * @example
+   * random(7) // [0-7) float
+   * random(7, 10)  // [7-10) float
+   * random(7, 10, true) // [0-7) int
+   *
+   * @return   {Number}
+   */
+  function random() {
+    var start = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : 0;
+    var end = arguments[1];
+    var int = arguments.length &gt; 2 &amp;&amp; arguments[2] !== undefined ? arguments[2] : false;
+
+    if (arguments.length === 1 &amp;&amp; isNumber(start)) {
+      end = start;
+      start = 0;
+    }
+    if (is(end, &#39;Boolean&#39;)) {
+      int = end;
+      end = start;
+      start = 0;
+    }
+    if (!isNumber(start) || !isNumber(end)) {
+      throw new TypeError(&#39;Expected a number&#39;);
+    }
+    var baseRandom = Math.random() * (end - start);
+    if (int) {
+      baseRandom = Math.floor(baseRandom);
+    }
+    return baseRandom + start;
+  }
+
+<span id='global-method-list'>  /**
+</span>   * 列表快速生成
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {Number}                   length length of list
+   * @param    {Function|Number}          fn     a function to generate list item. if is Number, array will fill with it.
+   * @return   {Array}                           new array
+   */
+  function list() {
+    var length = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : 0;
+    var fn = arguments.length &gt; 1 &amp;&amp; arguments[1] !== undefined ? arguments[1] : function () {};
+
+    if (isNumber(fn)) {
+      fn = new Function(&#39;return &#39; + fn);
+    }
+    if (!is(fn, &#39;Function&#39;)) {
+      throw new TypeError(&#39;Expected a Function&#39;);
+    }
+    return Array.from(Array(length), fn);
+  }
+<span id='global-method-randomItem'>  /**
+</span>   * 随机返回数组中的一项
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {Array}                   arr  an array
+   * @return   {*}                            random item of array
+   */
+  function randomItem() {
+    var arr = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : [];
+
+    if (!isArray(arr)) {
+      throw new TypeError(&#39;Expected an Array&#39;);
+    }
+    if (isEmptyArray(arr)) {
+      return undefined;
+    }
+    return arr[random(arr.length - 1, true)];
+  }
+
+  var commonjsGlobal = typeof window !== &#39;undefined&#39; ? window : typeof global !== &#39;undefined&#39; ? global : typeof self !== &#39;undefined&#39; ? self : {};
+
+  function createCommonjsModule(fn, module) {
+  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  }
+
+  var tick = createCommonjsModule(function (module, exports) {
+  (function (global, factory) {
+    module.exports = factory();
+  }(commonjsGlobal, (function () {
+    Object.setPrototypeOf = Object.setPrototypeOf || function (obj, proto) {
+      obj.__proto__ = proto;
+      return obj;
+    };
+
+<span id='Tick'>    /**
+</span>     * Tick 日期处理
+     * @param 同Date类接受的参数
+     * @example
+     * new Tick(Date.now()).format(&#39;YYYY-MM-DD&#39;)
+     * new Tick(Date.now()).getMap()
+     * new Tick(Date.now()).getDiff()
+     */
+    function Tick() {
+      if (/^\d{10}$/.test(arguments[0])) {
+        arguments[0] = arguments[0] * 1000;
+      }
+      if (typeof arguments[0] === &#39;string&#39; &amp;&amp; /[-.]/.test(arguments[0])) {
+        arguments[0] = arguments[0].replace(/[-.]/g, &#39;/&#39;);
+      }
+      var DateInstance = new (Function.prototype.bind.apply(Date, [Date].concat(Array.prototype.slice.call(arguments))))();
+
+      if (DateInstance.toString() === &#39;Invalid Date&#39;) throw TypeError(&#39;Invalid time input: &#39; + arguments[0]);
+
+      Tick.prototype._timestamp = DateInstance.getTime();
+      Tick.prototype._year = DateInstance.getFullYear();
+      Tick.prototype._month = DateInstance.getMonth() + 1;
+      Tick.prototype._week = DateInstance.getDay();
+      Tick.prototype._day = DateInstance.getDate();
+      Tick.prototype._hour = DateInstance.getHours();
+      Tick.prototype._minute = DateInstance.getMinutes();
+      Tick.prototype._second = DateInstance.getSeconds();
+
+      Object.setPrototypeOf(DateInstance, Tick.prototype);
+      return DateInstance;
+    }
+
+    Object.setPrototypeOf(Tick.prototype, Date.prototype);
+
+    var SECOND = 1000;
+    var MINUTE = SECOND * 60;
+    var HOUR = MINUTE * 60;
+    var DAY = HOUR * 24;
+    var MONTH = DAY * 30;
+    var YEAR = DAY * 365;
+    var WEEK_LIST = [&#39;日&#39;, &#39;一&#39;, &#39;二&#39;, &#39;三&#39;, &#39;四&#39;, &#39;五&#39;, &#39;六&#39;];
+
+    function bit2Ten(num) {
+      return +num &lt; 10 ? &#39;0&#39; + num : num + &#39;&#39;;
+    }
+
+<span id='Tick-method-format'>    /**
+</span>       * 格式化时间
+       * @param {string} timeTpl 日期格式化模板字符串 Y-年 M-月 D-日 h-时 m-分 s-秒
+       * @return {string} 格式化后的字符串
+       */
+    Tick.prototype.format = function () {
+      var timeTpl = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : &#39;YYYY-MM-DD hh:mm:ss&#39;;
+
+      return timeTpl.replace(&#39;YYYY&#39;, this._year).replace(&#39;Mm&#39;, this._month).replace(&#39;Dd&#39;, this._day).replace(&#39;WW&#39;, &#39;周&#39; + WEEK_LIST[this._week]).replace(&#39;MM&#39;, bit2Ten(this._month)).replace(&#39;DD&#39;, bit2Ten(this._day)).replace(&#39;hh&#39;, bit2Ten(this._hour)).replace(&#39;mm&#39;, bit2Ten(this._minute)).replace(&#39;ss&#39;, bit2Ten(this._second));
+    };
+<span id='Tick-method-getMap'>    /**
+</span>     * 获取对象形式的时间解析结果
+     * @return {object} 包含具体时间解析的对象
+     */
+    Tick.prototype.getMap = function () {
+      return {
+        year: this._year,
+        month: this._month,
+        day: this._day,
+        hour: this._hour,
+        minute: this._minute,
+        second: this._second,
+        $year: bit2Ten(this._year),
+        $month: bit2Ten(this._month),
+        $day: bit2Ten(this._day),
+        $hour: bit2Ten(this._hour),
+        $minute: bit2Ten(this._minute),
+        $second: bit2Ten(this._second)
+      };
+    };
+<span id='Tick-method-getDiff'>    /**
+</span>     * 多久前 用于评论等显示 &quot;多久前&quot;
+     * @return {string} 多久前的字符串 &quot;刚刚&quot; &quot;2天前&quot;
+     */
+    Tick.prototype.getDiff = function () {
+      var diffValue = Date.now() - this._timestamp;
+
+      if (diffValue &lt; 0) {
+        return &#39;刚刚&#39;;
+      }
+
+      var diffYear = Math.floor(diffValue / YEAR);
+      var diffMonth = Math.floor(diffValue / MONTH);
+      var diffDay = Math.floor(diffValue / DAY);
+      var diffHour = Math.floor(diffValue / HOUR);
+      var diffMinute = Math.floor(diffValue / MINUTE);
+      var diffSecond = Math.floor(diffValue / SECOND);
+
+      if (diffYear &gt;= 1) {
+        return diffYear + &#39;\u5E74\u524D&#39;;
+      } else if (12 &gt; diffMonth &amp;&amp; diffMonth &gt;= 1) {
+        return diffMonth + &#39;\u4E2A\u6708\u524D&#39;;
+      } else if (30 &gt; diffDay &amp;&amp; diffDay &gt;= 1) {
+        return diffDay + &#39;\u5929\u524D&#39;;
+      } else if (60 &gt; diffHour &amp;&amp; diffHour &gt;= 1) {
+        return diffHour + &#39;\u5C0F\u65F6\u524D&#39;;
+      } else if (60 &gt; diffMinute &amp;&amp; diffMinute &gt;= 1) {
+        return diffMinute + &#39;\u5206\u949F\u524D&#39;;
+      } else if (60 &gt; diffSecond &amp;&amp; diffSecond &gt;= 0) {
+        return &#39;刚刚&#39;;
+      }
+    };
+
+<span id='Tick-method-offset'>    /**
+</span>     * 计算多久之前或后一段时间
+     * @param {string} offset 之前或之后多少时间
+     */
+    Tick.prototype.offset = function () {
+      var offset = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : &#39;&#39;;
+
+      var isBefore = /^-/.test(offset);
+      offset = offset.replace(/[+-]g/, &#39;&#39;);
+      var signs = {
+        D: DAY,
+        h: HOUR,
+        m: MINUTE,
+        s: SECOND
+      };
+
+      var n = &#39;&#39;;
+      var t = 0;
+      for (var i = 0; i &lt; offset.length; i++) {
+        var s = offset[i];
+        if (/\d/.test(s)) {
+          n += s;
+        } else {
+          if (s === &#39;Y&#39;) {
+            n = +n;
+            this.setFullYear(isBefore ? this.getFullYear() - n : this.getFullYear() + n);
+            n = &#39;&#39;;
+          } else if (s === &#39;M&#39;) {
+            n = +n;
+            if (n &gt;= 12) {
+              var q = n % 12;
+              var y = Math.floor(n / 12);
+              this.setFullYear(isBefore ? this.getFullYear() - y : this.getFullYear() + y);
+              this.setMonth(isBefore ? this.getMonth() - q : this.getMonth() + q);
+              n = &#39;&#39;;
+            } else {
+              this.setMonth(isBefore ? this.getMonth() - n : this.getMonth() + n);
+              n = &#39;&#39;;
+            }
+          } else {
+            t += n * (signs[s] || 0);
+            n = &#39;&#39;;
+          }
+        }
+      }
+      t = isBefore ? -t : t;
+      return new Tick(this.getTime() + t);
+    };
+
+<span id='Tick-method-isBefore'>    /**
+</span>     * 比较时间的三个方法
+     * @Author   daben&lt;dabennn07@gmail.com&gt;
+     * @DateTime 2018-05-21T23:22:08+0800
+     * @param    {String|Number}                 date 任何可以被Date对象解析的时间
+     * @return   {Boolean}
+     */
+    Tick.prototype.isBefore = function (date) {
+      return this._timestamp &lt; new Tick(date).getTime();
+    };
+
+    Tick.prototype.isAfter = function (date) {
+      return this._timestamp &gt; new Tick(date).getTime();
+    };
+
+    Tick.prototype.isEqual = function (date) {
+      return this._timestamp === new Tick(date).getTime();
+    };
+
+<span id='Tick-method-isLeapYear'>    /**
+</span>     * 判断是否是闰年
+     * @Author   daben&lt;dabennn07@gmail.com&gt;
+     * @DateTime 2018-05-22T00:06:59+0800
+     * @param    {Number}                   year 年份
+     * @return   {Boolean}
+     */
+    Tick.isLeapYear = function (year) {
+      return year % 4 === 0 &amp;&amp; year % 100 !== 0 || year % 400 === 0;
+    };
+
+    return Tick;
+
+  })));
+  });
+
+<span id='Tick-method-versionCompare'>  /**
+</span>   * 版本号比较
+   * @param {String} v1              版本号
+   * @param {String} symbol          比较符号 &#39;=&#39; &#39;&gt;&#39; &#39;&lt;&#39; &#39;&gt;=&#39;  &#39;&lt;=&#39;
+   * @param {String} v2              版本号
+   * @return {boolean}
+   */
+  function versionCompare(v1, symbol, v2) {
+    if (&#39;&gt; &gt;= &lt; &lt;= =&#39;.indexOf(symbol) === -1) {
+      throw new Error(&#39;Invalid symbol&#39;);
+    }
+    if (arguments.length &lt; 3) {
+      throw new Error(&#39;At least 3 parameters&#39;);
+    }
+    if (typeof v1 !== &#39;string&#39; || typeof v2 !== &#39;string&#39;) {
+      throw new Error(&#39;Parameters must be String&#39;);
+    }
+    if (!/^\d+(\.\d+)*$/.test(v1) || !/^\d+(\.\d+)*$/.test(v2)) {
+      throw new Error(&#39;Invaild Version Number&#39;);
+    }
+
+    var v1Nums = v1.split(&#39;.&#39;).map(function (i) {
+      return parseInt(i, 10);
+    });
+    var v2Nums = v2.split(&#39;.&#39;).map(function (i) {
+      return parseInt(i, 10);
+    });
+    var v1NumsLen = v1Nums.length;
+    var v2NumsLen = v2Nums.length;
+
+    if (v1NumsLen - v2NumsLen &gt; 0) {
+      v2Nums.push.apply(v2Nums, toConsumableArray(Array.from(Array(v1NumsLen - v2NumsLen), function () {
+        return 0;
+      })));
+    } else if (v1NumsLen - v2NumsLen &lt; 0) {
+      v1Nums.push.apply(v1Nums, toConsumableArray(Array.from(Array(v2NumsLen - v1NumsLen), function () {
+        return 0;
+      })));
+    }
+
+    var compare = function compare() {
+      for (var i = 0; i &lt; v1Nums.length; i++) {
+        if (v1Nums[i] &gt; v2Nums[i]) {
+          return &#39;&gt;&#39;;
+        } else if (v1Nums[i] &lt; v2Nums[i]) {
+          return &#39;&lt;&#39;;
+        }
+      }
+      return &#39;=&#39;;
+    };
+
+    return symbol.indexOf(compare()) !== -1;
+  }
+
+  exports.env = env;
+  exports.wxPreviewImage = wxPreviewImage;
+  exports.is = is;
+  exports.isArray = isArray;
+  exports.isEmptyArray = isEmptyArray;
+  exports.isEmptyObjectLike = isEmptyObjectLike;
+  exports.isObject = isObject;
+  exports.isEmptyObject = isEmptyObject;
+  exports.isNumber = isNumber;
+  exports.isFloatNumber = isFloatNumber;
+  exports.isEvenNumber = isEvenNumber;
+  exports.versionCompare = versionCompare;
+  exports.firstUpper = firstUpper;
+  exports.trim = trim;
+  exports.trimStart = trimStart;
+  exports.trimEnd = trimEnd;
+  exports.camelCase = camelCase;
+  exports.capitalize = capitalize;
+  exports.random = random;
+  exports.list = list;
+  exports.randomItem = randomItem;
+
+  Object.defineProperty(exports, &#39;__esModule&#39;, { value: true });
+
+})));
+</pre>
+</body>
+</html>

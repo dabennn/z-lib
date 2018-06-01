@@ -2,8 +2,7 @@ import { is, isNumber } from '../type/index';
 
 /**
  * 生成一定范围内的随机数
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-30T11:37:21+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {Number}                   start  start of range
  * @param    {Number}                   end    end of range
  * @param    {Boolean}                  int    result is int if true, else is float

@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "NODE_ENV=dev rollup -c build/rollup.config.dev.js -w",
     "dev:test": "npm run test && npm run dev",
-    "docs": "./node_modules/jsdoc-to-markdown/bin/cli.js -f src/common/* src/type/* > README.md",
+    "docs": "jsduck dist/z.js --output docs",
     "build": "NODE_ENV=prod rollup -c build/rollup.config.build.js",
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha -w -b --recursive"
   },
@@ -19,7 +19,6 @@
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-latest": "^6.24.1",
-    "jsdoc-to-markdown": "^4.0.1",
     "mocha": "^5.1.1",
     "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-commonjs": "^9.1.3",

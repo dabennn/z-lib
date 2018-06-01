@@ -1,7 +1,6 @@
 /**
  * 首字母大写
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T19:24:06+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {String}                   str  string to handle
  * @return   {String}                        new string
  */
@@ -11,8 +10,7 @@ export function firstUpper(str) {
 
 /**
  * 去除字符串头尾空格
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T19:24:06+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {String}                   str  string to transform
  * @return   {String}                        new string
  */
@@ -22,8 +20,7 @@ export function trim(str) {
 
 /**
  * 去除字符串头部空格
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T19:24:06+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {String}                   str  string to transform
  * @return   {String}                        new string
  */
@@ -33,8 +30,7 @@ export function trimStart(str) {
 
 /**
  * 去除字符串尾部空格
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T19:24:06+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {String}                   str  string to transform
  * @return   {String}                        new string
  */
@@ -44,8 +40,7 @@ export function trimEnd(str) {
 
 /**
  * 转换字符串为驼峰命名法
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-30T09:54:07+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {String}                   str  string to transform
  * @return   {String}                        new string
  */
@@ -57,8 +52,7 @@ export function camelCase(str) {
 
 /**
  * 转换字符串为首字母大写形式
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-30T10:00:00+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {String}                   str  string to transform
  * @return   {String}                        new string
  */

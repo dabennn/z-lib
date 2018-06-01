@@ -1,16 +1,16 @@
 /**
  * 微信图片预览
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2017-09-28T17:17:29+0800
- * @param    {Object, String}            params
- *           Object={ current: '需要显示的图片的url', images: '所有图片的数组' } || String='需要显示的图片的url'
- * @return   {Boolean}                   成功为true, 失败为false
+ * @author   daben<dabennn07@gmail.com>
+ * @param     {Object|String}            params
+ * @param     {String} [params.current]  需要显示的图片的url
+ * @param     {Array} [params.images]  所有图片的数组
+ * @return   {Boolean}               成功为true, 失败为false
  *
- * @example
- * wxPreviewImage({
- *   current: 'http://xxxxxx.xxx.xxxx',
- *   images: ['http://xxxxx.xxxx.xxx', 'http://xxx.xxxx.xxxx']
- * })
+ *    @example
+ *    wxPreviewImage({
+ *      current: 'http://xxxxxx.xxx.xxxx',
+ *      images: ['http://xxxxx.xxxx.xxx', 'http://xxx.xxxx.xxxx']
+ *    })
  */
 export function wxPreviewImage(params = {}) {
   let current;

@@ -2,8 +2,7 @@ import is from './is';
 
 /**
  * 是否是数字
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T16:40:41+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {*}                   num  The value to check.
  * @return   {Boolean}             'true' if the value is Number, else 'false'.
  */
@@ -13,8 +12,7 @@ export function isNumber(num) {
 
 /**
  * 是否是浮点数
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T16:42:03+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {*}                   num  The value to check.
  * @return   {Boolean}             'true' if the value is floatNumber, else 'false'.
  */
@@ -24,8 +22,7 @@ export function isFloatNumber(num) {
 
 /**
  * 是否是偶数
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T16:42:03+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {*}                   num  The value to check.
  * @return   {Boolean}             'true' if the value is evenNumber, else 'false'.
  */

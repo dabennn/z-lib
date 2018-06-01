@@ -1,5 +1,12 @@
 /**
  * 判断环境
+ * @cfg {Object} env
+ * @cfg {Function} [env.isWeChat] 判断是否微信ua
+ * @cfg {Function} [env.isCosmeapp] 判断是否App ua
+ * @cfg {Function} [env.isIOS] 判断是否ios ua
+ * @cfg {Function} [env.isAndroid] 判断是否安卓ua
+ * @cfg {Function} [env.isUC] 判断是否uc浏览器ua
+ * @cfg {Function} [env.isBroswer] 判断是否是浏览器环境
  */
 export default {
   isWeChat() {

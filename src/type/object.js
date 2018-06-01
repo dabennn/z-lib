@@ -2,8 +2,7 @@ import is from './is';
 
 /**
  * 是否是空对象或类对象
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T16:49:15+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {*}                   obj  The value to check.
  * @return   {Boolean}             'true' if value is emptyObjectLike, else 'false'.
  */
@@ -19,8 +18,7 @@ export function isEmptyObjectLike(obj) {
 
 /**
  * 是否是对象
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T16:56:13+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {*}                   obj  The value to check.
  * @return   {Boolean}             'true' if value is Object, else 'false'.
  */
@@ -30,8 +28,7 @@ export function isObject(obj) {
 
 /**
  * 是否是空对象
- * @Author   daben<dabennn07@gmail.com>
- * @DateTime 2018-05-29T16:56:17+0800
+ * @author   daben<dabennn07@gmail.com>
  * @param    {*}                   obj  The value to check.
  * @return   {Boolean}             'true' if value is emptyObject, else 'false'.
  */
