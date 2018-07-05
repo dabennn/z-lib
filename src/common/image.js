@@ -5,6 +5,28 @@ import {
   isFunction,
 } from '../type';
 
+/**
+ * 图片加载器
+ * @class ImageLoader
+ * @param {String|Array} uri 图片路径或包含路径的数组
+ * @param {Object} options 配置项
+ * @param {Function} [options.compelete] 加载完成回调
+ * @param {Function} [options.progress] 加载进度回调
+ *
+ *    @example
+ *    const pics = [
+ *      { name: xx, uri: xxx },
+ *      { name: xx, uri: xxx },
+ *    ];
+ *    const loader = new ImageLoader(pics);
+ *    loader.on('progress', (percent) => {
+ *      xxx
+ *    });
+ *    loader.on('compelete', (suc, fail) => {
+ *      xxx
+ *    });
+ *    loader.load();
+ */
 export default class ImageLoader {
   constructor(...args) {
     this._loading = false;
@@ -31,13 +53,24 @@ export default class ImageLoader {
       this.progress = args[1].progress;
     }
   }
-
+  /**
+   * 注册回调
+   * @param {String} name 回调名称
+   * @param {Function} cb 回调函数
+   */
   on(name, cb = () => {}) {
     if (!isFunction(cb)) throw new TypeError(cb + 'is not a function');
     if (name !== 'compelete' && name !== 'progress') return;
     this[name] = cb;
   }
-
+  /**
+   * 添加图片
+   * @param {String|Array} uri 图片路径或包含路径的数组
+   * @example
+   * 接受字符串形式的路径 add('xxx')
+   * 字符串数组形式的路径 add(['xxx', 'xxx'])
+   * 对象数组形式的路径 add([{ name: 'xxx', uri: 'xxx' }, { name: 'xxx', uri: 'xxx' }])
+   */
   add(uri) {
     if (!isString(uri) && !isArray(uri)) {
       throw new TypeError('Just allow Array or String');
@@ -60,7 +93,9 @@ export default class ImageLoader {
     }
     return this;
   }
-
+  /**
+   * 开始加载
+   */
   load() {
     if (!this._loading) {
       this.queue.push(...this.list);
