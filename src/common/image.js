@@ -33,7 +33,7 @@ export default class ImageLoader {
   }
 
   on(name, cb = () => {}) {
-    if (isFunction(cb)) throw new TypeError(cb + 'is not a function');
+    if (!isFunction(cb)) throw new TypeError(cb + 'is not a function');
     if (name !== 'compelete' && name !== 'progress') return;
     this[name] = cb;
   }
@@ -43,20 +43,20 @@ export default class ImageLoader {
       throw new TypeError('Just allow Array or String');
     }
     if (isString(uri)) {
-      uri = [{ name: '$image' + this._index, uri }];
+      uri = [{ name: 'image$' + this._index, uri }];
     }
     for (const p of uri) {
       const item = {};
       if (isString(p)) {
-        item.name = '$image' + this._index;
+        item.name = 'image$' + this._index;
         item.uri = p;
       } else {
         if (!p.uri) throw new Error('Missing image uri');
-        item.name = p.name ? p.name : '$image' + this._index;
+        item.name = p.name ? p.name : 'image$' + this._index;
         item.uri = p.uri;
       }
       this.list.push(item);
-      this.index++;
+      this._index++;
     }
     return this;
   }
@@ -78,7 +78,7 @@ export default class ImageLoader {
       cur.image = image;
       this.count++;
       this.success.push(cur);
-      this.progress(this.count);
+      this.progress(this.count / this.list.length);
       this.load();
     };
     const errorFn = (err) => {
@@ -94,8 +94,8 @@ export default class ImageLoader {
     if (image.complete) {
       successFn();
     } else {
-      image.onload = successFn;
-      image.error = errorFn;
+      image.addEventListener('load', successFn, false);
+      image.addEventListener('error', errorFn, false);
     }
   }
 }
