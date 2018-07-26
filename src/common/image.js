@@ -3,7 +3,7 @@ import {
   isArray,
   isString,
   isFunction,
-} from '../type';
+} from '../type/index';
 
 /**
  * 图片加载器

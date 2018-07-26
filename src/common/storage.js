@@ -1,4 +1,4 @@
-import { isString, isObject } from '../type';
+import { isString, isObject } from '../type/index';
 
 /**
  * 本地储存
