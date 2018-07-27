@@ -8,10 +8,10 @@
   ],
   "scripts": {
     "dev": "NODE_ENV=dev rollup -c build/rollup.config.dev.js -w",
-    "dev:test": "npm run test && npm run dev",
     "docs": "jsduck dist/z.js --output docs",
     "build": "NODE_ENV=prod rollup -c build/rollup.config.build.js",
-    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha -w -b --recursive"
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha -b --recursive",
+    "test:dev": "NODE_ENV=test ./node_modules/mocha/bin/mocha -w -b --recursive"
   },
   "author": "daben",
   "license": "MIT",
