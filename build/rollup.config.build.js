@@ -1,53 +1,46 @@
-import babel from 'rollup-plugin-babel';
+import baseConfig from './rollup.config.base';
 import uglify from 'rollup-plugin-uglify';
-import commonjs from 'rollup-plugin-commonjs';
-import resolve from 'rollup-plugin-node-resolve';
+import { deepClone } from '../src/common/object';
 
-export default [{
-  input: 'src/index.js',
-  output: {
-    file: 'dist/z.js',
+const buildConfig = deepClone(baseConfig);
+const buildUglifyConfig = deepClone(baseConfig);
+
+buildUglifyConfig.output = [
+  {
+    file: 'dist/z.min.js',
     format: 'umd',
-    name: 'Z'
+    name: 'Z',
+    exports: 'named',
+    globals: {
+      Tick: 'Tick',
+    },
   },
-  plugins: [
-    resolve(),
-    commonjs(),
-    babel({
-      exclude: 'node_modules/**'
-    })
-  ]
-}, {
-  input: 'src/index.js',
-  output: [
-    {
-      file: 'dist/z.min.js',
-      format: 'umd',
-      name: 'Z'
+  {
+    file: 'dist/z.cjs.min.js',
+    format: 'cjs',
+    exports: 'named',
+    globals: {
+      Tick: 'Tick',
     },
-    {
-      file: 'dist/z.cjs.min.js',
-      format: 'cjs'
+  },
+  {
+    file: 'dist/z.iife.min.js',
+    format: 'iife',
+    name: 'Z',
+    exports: 'named',
+    globals: {
+      Tick: 'Tick',
     },
-    {
-      file: 'dist/z.iife.min.js',
-      format: 'iife',
-      name: 'Z'
+  },
+  {
+    file: 'dist/z.esm.min.js',
+    format: 'es',
+    exports: 'named',
+    globals: {
+      Tick: 'Tick',
     },
-    {
-      file: 'dist/z.esm.min.js',
-      format: 'es'
-    }
-  ],
-  plugins: [
-    resolve(),
-    commonjs(),
-    babel({
-      exclude: 'node_modules/**',
-      plugins: [
-        'external-helpers'
-      ]
-    }),
-    uglify()
-  ]
-}];
+  }
+];
+buildUglifyConfig.plugins.push(uglify());
+
+export default [buildConfig, buildUglifyConfig];
