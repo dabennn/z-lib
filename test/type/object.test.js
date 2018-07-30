@@ -40,6 +40,9 @@ describe('determine object type', function () {
     isObjectLike(null).should.be.false();
     isObjectLike(undefined).should.be.false();
   });
+})
+
+describe('methods to operate object', function () {
   it('test deepClone', function () {
     const a = {
       b: 1,
