@@ -1,6 +1,14 @@
 import { isObject, isString, isArray } from 'type';
 import qs from './querystring';
 
+/**
+ * url解析类
+ * @class Url
+ * @param {String} url字符串
+ *
+ *    @example
+ *    new Url('http://a.com?a=1').search // return '?a=1'
+ */
 export class Url {
   constructor(url) {
     if (!arguments.length) throw new TypeError('Invalid URL: undefined');
@@ -43,6 +51,14 @@ export class Url {
   }
 }
 
+/**
+ * url search参数解析类
+ * @class UrlSearchParams
+ * @param {String|Object} 参数字符串或解析后的对象
+ *
+ *    @example
+ *    new UrlSearchParams('?a=1&b=2').append('c', 2) // return 'a=1&b=2&c=2'
+ */
 export class UrlSearchParams {
   constructor(param = undefined) {
     let obj = {};
@@ -52,6 +68,7 @@ export class UrlSearchParams {
       obj = param;
     }
     this._queryObject = obj;
+    return this._queryObject;
   }
   append(name, value) {
     if (this._queryObject[name]) {
