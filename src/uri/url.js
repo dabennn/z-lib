@@ -68,7 +68,6 @@ export class UrlSearchParams {
       obj = param;
     }
     this._queryObject = obj;
-    return this._queryObject;
   }
   append(name, value) {
     if (this._queryObject[name]) {

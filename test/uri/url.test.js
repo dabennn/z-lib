@@ -16,6 +16,7 @@ describe('parse url', function () {
     url.pathname.should.be.String().and.equal('/p/a/t/h');
     url.search.should.be.String().and.equal('?query=string&q=1&q=3');
     url.hash.should.be.String().and.equal('#hash');
+
     url.searchParams.append('a', 1).should.be.String().and.equal('query=string&q=1&q=3&a=1');
     url.searchParams.delete('query').should.be.String().and.equal('q=1&q=3&a=1');
     url.searchParams.get('q').should.be.String().and.equal('1');

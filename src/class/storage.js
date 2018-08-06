@@ -6,7 +6,7 @@ import { isString, isObject } from '../type';
  * @param {String} key localStorage键
  *
  *    @example
- *    const store = new Storage('store_key');
+ *    const store = new Storager('store_key');
  *    store.add({ a: 1 });
  *    store.set('a', 2);
  *    let a = store.get('a'); // 2
@@ -43,7 +43,7 @@ export default class Storager {
   _init() {
     const value = localStorage[this.STORAGE_KEY];
     if (!value) {
-      Storage.setItem(this.STORAGE_KEY, '');
+      Storager.setItem(this.STORAGE_KEY, '');
     }
   }
   /**
@@ -54,11 +54,11 @@ export default class Storager {
   add(obj = {}) {
     if (!isObject(obj)) throw new TypeError('Invalid Object: ' + obj);
     try {
-      const storage = Storage.getItem(this.STORAGE_KEY);
+      const storage = Storager.getItem(this.STORAGE_KEY);
       if (storage) {
         obj = Object.assign(JSON.parse(storage), obj);
       }
-      Storage.setItem(this.STORAGE_KEY, JSON.stringify(obj));
+      Storager.setItem(this.STORAGE_KEY, JSON.stringify(obj));
     } catch (e) {
       throw new Error(e);
     }
@@ -72,7 +72,7 @@ export default class Storager {
   set(key, value) {
     const storage = this.get();
     storage[key] = value;
-    Storage.setItem(this.STORAGE_KEY, JSON.stringify(storage));
+    Storager.setItem(this.STORAGE_KEY, JSON.stringify(storage));
     return this;
   }
   /**
@@ -82,7 +82,7 @@ export default class Storager {
   get(key = '') {
     if (!isString(key)) return null;
     try {
-      const storage = JSON.parse(Storage.getItem(this.STORAGE_KEY)) || {};
+      const storage = JSON.parse(Storager.getItem(this.STORAGE_KEY)) || {};
       if (!key) return storage;
       return storage[key];
     } catch (e) {
@@ -97,13 +97,13 @@ export default class Storager {
   remove(key = '') {
     const storage = this.get();
     delete storage[key];
-    Storage.setItem(this.STORAGE_KEY, JSON.stringify(storage));
+    Storager.setItem(this.STORAGE_KEY, JSON.stringify(storage));
     return this;
   }
   /**
    * 清除数据
    */
   clear() {
-    Storage.removeItem(this.STORAGE_KEY);
+    Storager.removeItem(this.STORAGE_KEY);
   }
 }
