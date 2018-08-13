@@ -67,6 +67,46 @@
     return true;
   }
 
+  var _typeof = typeof Symbol === &quot;function&quot; &amp;&amp; typeof Symbol.iterator === &quot;symbol&quot; ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj &amp;&amp; typeof Symbol === &quot;function&quot; &amp;&amp; obj.constructor === Symbol &amp;&amp; obj !== Symbol.prototype ? &quot;symbol&quot; : typeof obj;
+  };
+
+  var classCallCheck = function (instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError(&quot;Cannot call a class as a function&quot;);
+    }
+  };
+
+  var createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i &lt; props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if (&quot;value&quot; in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  var toConsumableArray = function (arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i &lt; arr.length; i++) arr2[i] = arr[i];
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  };
+
 <span id='global-cfg-env'>  /**
 </span>   * 判断环境
    * @cfg {Object} env
@@ -76,6 +116,7 @@
    * @cfg {Function} [env.isAndroid] 判断是否安卓ua
    * @cfg {Function} [env.isUC] 判断是否uc浏览器ua
    * @cfg {Function} [env.isBroswer] 判断是否是浏览器环境
+   * @cfg {Function} [env.isNode] 判断是否是nodejs环境
    */
   var env = {
     isWeChat: function isWeChat() {
@@ -99,7 +140,10 @@
       );
     },
     isBroswer: function isBroswer() {
-      return typeof window !== &#39;undefined&#39;;
+      return (typeof self === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(self)) == &#39;object&#39; &amp;&amp; self !== null &amp;&amp; self.Object === Object;
+    },
+    isNode: function isNode() {
+      return (typeof global === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(global)) == &#39;object&#39; &amp;&amp; global !== null &amp;&amp; global.Object;
     }
   };
 
@@ -144,46 +188,6 @@
   function isUndefined(p) {
     return p === undefined;
   }
-
-  var _typeof = typeof Symbol === &quot;function&quot; &amp;&amp; typeof Symbol.iterator === &quot;symbol&quot; ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj &amp;&amp; typeof Symbol === &quot;function&quot; &amp;&amp; obj.constructor === Symbol &amp;&amp; obj !== Symbol.prototype ? &quot;symbol&quot; : typeof obj;
-  };
-
-  var classCallCheck = function (instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError(&quot;Cannot call a class as a function&quot;);
-    }
-  };
-
-  var createClass = function () {
-    function defineProperties(target, props) {
-      for (var i = 0; i &lt; props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if (&quot;value&quot; in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-      }
-    }
-
-    return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) defineProperties(Constructor, staticProps);
-      return Constructor;
-    };
-  }();
-
-  var toConsumableArray = function (arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = Array(arr.length); i &lt; arr.length; i++) arr2[i] = arr[i];
-
-      return arr2;
-    } else {
-      return Array.from(arr);
-    }
-  };
 
 <span id='global-method-isEmptyObjectLike'>  /**
 </span>   * 是否是空对象或类对象
@@ -512,21 +516,231 @@
     return value;
   }
 
-<span id='Storage'>  /**
+<span id='global-method-versionCompare'>  /**
+</span>   * 版本号比较
+   * @param {String} v1              版本号
+   * @param {String} symbol          比较符号 &#39;=&#39; &#39;&gt;&#39; &#39;&lt;&#39; &#39;&gt;=&#39;  &#39;&lt;=&#39;
+   * @param {String} v2              版本号
+   * @return {boolean}
+   */
+  function versionCompare(v1, symbol, v2) {
+    if (&#39;&gt; &gt;= &lt; &lt;= =&#39;.indexOf(symbol) === -1) {
+      throw new Error(&#39;Invalid symbol&#39;);
+    }
+    if (arguments.length &lt; 3) {
+      throw new Error(&#39;At least 3 parameters&#39;);
+    }
+    if (typeof v1 !== &#39;string&#39; || typeof v2 !== &#39;string&#39;) {
+      throw new Error(&#39;Parameters must be String&#39;);
+    }
+    if (!/^\d+(\.\d+)*$/.test(v1) || !/^\d+(\.\d+)*$/.test(v2)) {
+      throw new Error(&#39;Invaild Version Number&#39;);
+    }
+
+    var v1Nums = v1.split(&#39;.&#39;).map(function (i) {
+      return parseInt(i, 10);
+    });
+    var v2Nums = v2.split(&#39;.&#39;).map(function (i) {
+      return parseInt(i, 10);
+    });
+    var v1NumsLen = v1Nums.length;
+    var v2NumsLen = v2Nums.length;
+
+    if (v1NumsLen - v2NumsLen &gt; 0) {
+      v2Nums.push.apply(v2Nums, toConsumableArray(Array.from(Array(v1NumsLen - v2NumsLen), function () {
+        return 0;
+      })));
+    } else if (v1NumsLen - v2NumsLen &lt; 0) {
+      v1Nums.push.apply(v1Nums, toConsumableArray(Array.from(Array(v2NumsLen - v1NumsLen), function () {
+        return 0;
+      })));
+    }
+
+    var compare = function compare() {
+      for (var i = 0; i &lt; v1Nums.length; i++) {
+        if (v1Nums[i] &gt; v2Nums[i]) {
+          return &#39;&gt;&#39;;
+        } else if (v1Nums[i] &lt; v2Nums[i]) {
+          return &#39;&lt;&#39;;
+        }
+      }
+      return &#39;=&#39;;
+    };
+
+    return symbol.indexOf(compare()) !== -1;
+  }
+
+
+
+  var common = /*#__PURE__*/Object.freeze({
+    versionCompare: versionCompare,
+    firstUpper: firstUpper,
+    trim: trim,
+    trimStart: trimStart,
+    trimEnd: trimEnd,
+    camelCase: camelCase,
+    capitalize: capitalize,
+    random: random,
+    weightedRandom: weightedRandom,
+    list: list,
+    randomItem: randomItem,
+    deepClone: deepClone
+  });
+
+  function typeErr(except, got) {
+    return TypeError(&#39;Except \&#39;&#39; + except + &#39;\&#39;, got \&#39;&#39; + got + &#39;\&#39;&#39;);
+  }
+
+  function registerDefaultValidate(Validate) {
+    // 不能少于多少个字符
+    Validate.register(&#39;minLength&#39;, {
+      validate: function validate(v, limit) {
+        this.rules.minLength.errorMsg = &#39;最小不能少于&#39; + limit + &#39;个字符&#39;;
+        return String(v).length &gt;= limit;
+      },
+      successMsg: &#39;验证成功&#39;,
+      errorMsg: &#39;长度错误&#39;
+    });
+    // 不能多于多少个字符
+    Validate.register(&#39;maxLength&#39;, {
+      validate: function validate(v, limit) {
+        this.rules.maxLength.errorMsg = &#39;最大不能超过&#39; + limit + &#39;个字符&#39;;
+        return String(v).length &lt;= limit;
+      },
+      successMsg: &#39;验证成功&#39;,
+      errorMsg: &#39;长度错误&#39;
+    });
+    // 验证手机号码
+    Validate.register(&#39;isMoblie&#39;, {
+      validate: function validate(v) {
+        return (/^1\d{10}$/.test(v)
+        );
+      },
+      successMsg: &#39;验证成功&#39;,
+      errorMsg: &#39;请输入有效的手机号码&#39;
+    });
+  }
+
+  var rulesCache = {};
+
+<span id='register'>  /**
+</span>   * 验证类
+   * @class Validate
+   * @param {Any} 需要验证的值
+   * @method register 注册验证函数
+   * @method done 返回验证结果
+   */
+  var Validate = function () {
+    function Validate(value) {
+      classCallCheck(this, Validate);
+
+      this.value = value;
+      this.rules = rulesCache;
+      this.lastResult = {
+        name: &#39;VALIDATE_NAME&#39;,
+        status: true,
+        msg: &#39;VALIDATE_MASSAGE&#39;
+      };
+
+      registerDefaultValidate(Validate);
+    }
+
+<span id='register-method-'>    /**
+</span>     * 注册验证函数
+     * @param {String} name 验证函数名
+     * @param {Object} rule 验证规则对象
+     * @param {Function} [rule.validate] 验证函数。接受多个参数，第一个参数是需要验证的值，其他参数依次为调用时传入的参数
+     * @param {String} [rule.successMsg] 成功的提示
+     * @param {String} [rule.errorMsg] 失败的提示
+     */
+
+
+    createClass(Validate, [{
+      key: &#39;done&#39;,
+      value: function done() {
+        return this.lastResult;
+      }
+    }], [{
+      key: &#39;register&#39;,
+      value: function register(name, rule) {
+        if (!isFunction(rule.validate)) throw typeErr(&#39;function&#39;, rule.validate);
+        if (!isString(rule.successMsg)) throw typeErr(&#39;string&#39;, rule.successMsg);
+        if (!isString(rule.errorMsg)) throw typeErr(&#39;string&#39;, rule.errorMsg);
+
+        rulesCache[name] = {
+          name: name,
+          validate: rule.validate,
+          successMsg: rule.successMsg,
+          errorMsg: rule.errorMsg
+        };
+
+        Validate.prototype[name] = function () {
+          var _rule$validate;
+
+          if (!this.lastResult.status) {
+            return this;
+          }
+          var _rule = this.rules[name];
+
+          for (var _len = arguments.length, args = Array(_len), _key = 0; _key &lt; _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          var status = (_rule$validate = _rule.validate).call.apply(_rule$validate, [this, this.value].concat(args));
+          if (!!status) {
+            this.lastResult = {
+              name: name,
+              status: true,
+              msg: _rule.successMsg
+            };
+          } else {
+            this.lastResult = {
+              name: name,
+              status: false,
+              msg: _rule.errorMsg
+            };
+          }
+          return this;
+        };
+      }
+    }]);
+    return Validate;
+  }();
+
+<span id='register-method-validator'>  /**
+</span>   * 验证器
+   * @param {Any} 验证的值
+   * @param {Array|Object} 验证函数配置
+   * @return Validate实例
+   *
+   *    @example
+   *    let ret = validator(1).minLength(4).done()
+   *    console.log(ret.name, ret.msg, ret.status) // &#39;minLength&#39;, &#39;最小不能少于4个字符&#39;, false
+   */
+  function validator(value, options) {
+    if (isObjectLike(options)) {
+      for (var p in options) {
+        Validate.register(p.name || p, options[p]);
+      }
+    }
+    return new Validate(value);
+  }
+
+<span id='Storager'>  /**
 </span>   * 本地储存
-   * @class Storage
+   * @class Storager
    * @param {String} key localStorage键
    *
    *    @example
-   *    const store = new Storage(&#39;store_key&#39;);
+   *    const store = new Storager(&#39;store_key&#39;);
    *    store.add({ a: 1 });
    *    store.set(&#39;a&#39;, 2);
    *    let a = store.get(&#39;a&#39;); // 2
    */
 
-  var Storage = function () {
-    function Storage(key) {
-      classCallCheck(this, Storage);
+  var Storager = function () {
+    function Storager(key) {
+      classCallCheck(this, Storager);
 
       if (!isString(key)) {
         throw new TypeError(&#39;Storage Key must be String&#39;);
@@ -539,15 +753,15 @@
       this._init();
     }
 
-    createClass(Storage, [{
+    createClass(Storager, [{
       key: &#39;_init&#39;,
       value: function _init() {
         var value = localStorage[this.STORAGE_KEY];
         if (!value) {
-          Storage.setItem(this.STORAGE_KEY, &#39;&#39;);
+          Storager.setItem(this.STORAGE_KEY, &#39;&#39;);
         }
       }
-<span id='Storage-method-'>      /**
+<span id='Storager-method-'>      /**
 </span>       * 添加数据
        * @param {Object} obj 对象形式的数据
        * @return this
@@ -560,17 +774,17 @@
 
         if (!isObject(obj)) throw new TypeError(&#39;Invalid Object: &#39; + obj);
         try {
-          var storage = Storage.getItem(this.STORAGE_KEY);
+          var storage = Storager.getItem(this.STORAGE_KEY);
           if (storage) {
             obj = Object.assign(JSON.parse(storage), obj);
           }
-          Storage.setItem(this.STORAGE_KEY, JSON.stringify(obj));
+          Storager.setItem(this.STORAGE_KEY, JSON.stringify(obj));
         } catch (e) {
           throw new Error(e);
         }
         return this;
       }
-<span id='Storage-method-'>      /**
+<span id='Storager-method-'>      /**
 </span>       * 根据键设置数据
        * @param {String} key 键
        * @param {Any} value 值
@@ -581,10 +795,10 @@
       value: function set$$1(key, value) {
         var storage = this.get();
         storage[key] = value;
-        Storage.setItem(this.STORAGE_KEY, JSON.stringify(storage));
+        Storager.setItem(this.STORAGE_KEY, JSON.stringify(storage));
         return this;
       }
-<span id='Storage-method-'>      /**
+<span id='Storager-method-'>      /**
 </span>       * 根据键获取数据
        * @param {String} key 键
        */
@@ -596,7 +810,7 @@
 
         if (!isString(key)) return null;
         try {
-          var storage = JSON.parse(Storage.getItem(this.STORAGE_KEY)) || {};
+          var storage = JSON.parse(Storager.getItem(this.STORAGE_KEY)) || {};
           if (!key) return storage;
           return storage[key];
         } catch (e) {
@@ -604,7 +818,7 @@
           return {};
         }
       }
-<span id='Storage-method-'>      /**
+<span id='Storager-method-'>      /**
 </span>       * 根据键删除数据
        * @param {String} key 键
        */
@@ -616,17 +830,17 @@
 
         var storage = this.get();
         delete storage[key];
-        Storage.setItem(this.STORAGE_KEY, JSON.stringify(storage));
+        Storager.setItem(this.STORAGE_KEY, JSON.stringify(storage));
         return this;
       }
-<span id='Storage-property-'>      /**
+<span id='Storager-property-'>      /**
 </span>       * 清除数据
        */
 
     }, {
       key: &#39;clear&#39;,
       value: function clear() {
-        Storage.removeItem(this.STORAGE_KEY);
+        Storager.removeItem(this.STORAGE_KEY);
       }
     }], [{
       key: &#39;setItem&#39;,
@@ -655,7 +869,7 @@
         localStorage.clear();
       }
     }]);
-    return Storage;
+    return Storager;
   }();
 
 <span id='ImageLoader'>  /**
@@ -836,77 +1050,13 @@
     return ImageLoader;
   }();
 
-<span id='ImageLoader-method-versionCompare'>  /**
-</span>   * 版本号比较
-   * @param {String} v1              版本号
-   * @param {String} symbol          比较符号 &#39;=&#39; &#39;&gt;&#39; &#39;&lt;&#39; &#39;&gt;=&#39;  &#39;&lt;=&#39;
-   * @param {String} v2              版本号
-   * @return {boolean}
-   */
-  function versionCompare(v1, symbol, v2) {
-    if (&#39;&gt; &gt;= &lt; &lt;= =&#39;.indexOf(symbol) === -1) {
-      throw new Error(&#39;Invalid symbol&#39;);
-    }
-    if (arguments.length &lt; 3) {
-      throw new Error(&#39;At least 3 parameters&#39;);
-    }
-    if (typeof v1 !== &#39;string&#39; || typeof v2 !== &#39;string&#39;) {
-      throw new Error(&#39;Parameters must be String&#39;);
-    }
-    if (!/^\d+(\.\d+)*$/.test(v1) || !/^\d+(\.\d+)*$/.test(v2)) {
-      throw new Error(&#39;Invaild Version Number&#39;);
-    }
-
-    var v1Nums = v1.split(&#39;.&#39;).map(function (i) {
-      return parseInt(i, 10);
-    });
-    var v2Nums = v2.split(&#39;.&#39;).map(function (i) {
-      return parseInt(i, 10);
-    });
-    var v1NumsLen = v1Nums.length;
-    var v2NumsLen = v2Nums.length;
-
-    if (v1NumsLen - v2NumsLen &gt; 0) {
-      v2Nums.push.apply(v2Nums, toConsumableArray(Array.from(Array(v1NumsLen - v2NumsLen), function () {
-        return 0;
-      })));
-    } else if (v1NumsLen - v2NumsLen &lt; 0) {
-      v1Nums.push.apply(v1Nums, toConsumableArray(Array.from(Array(v2NumsLen - v1NumsLen), function () {
-        return 0;
-      })));
-    }
-
-    var compare = function compare() {
-      for (var i = 0; i &lt; v1Nums.length; i++) {
-        if (v1Nums[i] &gt; v2Nums[i]) {
-          return &#39;&gt;&#39;;
-        } else if (v1Nums[i] &lt; v2Nums[i]) {
-          return &#39;&lt;&#39;;
-        }
-      }
-      return &#39;=&#39;;
-    };
-
-    return symbol.indexOf(compare()) !== -1;
-  }
 
 
-
-  var common = /*#__PURE__*/Object.freeze({
-    Storage: Storage,
+  var classes = /*#__PURE__*/Object.freeze({
+    Storager: Storager,
     ImageLoader: ImageLoader,
-    versionCompare: versionCompare,
-    firstUpper: firstUpper,
-    trim: trim,
-    trimStart: trimStart,
-    trimEnd: trimEnd,
-    camelCase: camelCase,
-    capitalize: capitalize,
-    random: random,
-    weightedRandom: weightedRandom,
-    list: list,
-    randomItem: randomItem,
-    deepClone: deepClone
+    Validate: Validate,
+    validator: validator
   });
 
 <span id='ImageLoader-property-freeGlobal'>  /** Detect free variable `global` from Node.js. */
@@ -1200,21 +1350,267 @@
     throttle: throttle
   });
 
-  // const Z = {};
-  // const addDefault = (o) =&gt; {
-  //   Object.keys(o).forEach((v) =&gt; {
-  //     Z[v] = o[v];
-  //   });
-  // };
+  function isStringOrNumber(val) {
+    return isString(val) || isNumber(val);
+  }
 
-  // addDefault(module);
-  // addDefault(type);
-  // addDefault(common);
+<span id='ImageLoader-method-parse'>  /**
+</span>   * 解析URL查询字符串
+   * @param {String} str 要解析的url查询字符串
+   * @param {String} sep 用于界定查询字符串中的键值对的子字符串。默认为 &#39;&amp;&#39;
+   * @param {String} eq 用于界定查询字符串中的键与值的子字符串。默认为 &#39;=&#39;
+   *
+   * @example
+   *    import { qs } from &#39;zcos&#39;
+   *    qs.parse(&#39;a=1&amp;a=2&#39;); // return { a: [1, 2] }
+   *
+   * @return {Object} url查询字符串键值对对象
+   */
+  function parse() {
+    var str = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : &#39;&#39;;
+    var sep = arguments.length &gt; 1 &amp;&amp; arguments[1] !== undefined ? arguments[1] : &#39;&amp;&#39;;
+    var eq = arguments.length &gt; 2 &amp;&amp; arguments[2] !== undefined ? arguments[2] : &#39;=&#39;;
 
-  // export default Z;
-  var index = Object.assign({}, module$1, type, common, lib);
+    if (!isString(str)) return {};
+    str = str.replace(/^\?/, &#39;&#39;).replace(new RegExp(&#39;\\&#39; + sep + &#39;$&#39;), &#39;&#39;);
 
-  exports.default = index;
+    var strs = str.split(sep);
+    var obj = {};
+
+    for (var i = 0; i &lt; strs.length; i++) {
+      var arr = strs[i].split(eq);
+      var key = arr[0];
+      var value = arr[1];
+
+      if (obj[key] !== undefined) {
+        var val = obj[key];
+        if (isArray(val)) {
+          val.push(value);
+        } else {
+          obj[key] = [val, value];
+        }
+      } else {
+        obj[key] = value;
+      }
+    }
+    return obj;
+  }
+
+<span id='ImageLoader-method-stringify'>  /**
+</span>   * 序列化对象成为url查询字符串
+   * @param {Object} obj 要序列化成 URL 查询字符串的对象
+   * @param {String} sep 用于界定查询字符串中的键值对的子字符串。默认为 &#39;&amp;&#39;
+   * @param {String} eq 用于界定查询字符串中的键与值的子字符串。默认为 &#39;=&#39;
+   *
+   * @example
+   *    const o = { a: 1, b: [1, 2] }
+   *    qs.stringify(o); // return &#39;a=1&amp;b=1&amp;b=2&#39;
+   *
+   * @return {String} 序列化后的字符串
+   */
+  function stringify() {
+    var obj = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : {};
+    var sep = arguments.length &gt; 1 &amp;&amp; arguments[1] !== undefined ? arguments[1] : &#39;&amp;&#39;;
+    var eq = arguments.length &gt; 2 &amp;&amp; arguments[2] !== undefined ? arguments[2] : &#39;=&#39;;
+
+    if (!isObject(obj) &amp;&amp; !isArray(obj)) return &#39;&#39;;
+    var getPart = function getPart(key, value) {
+      return key + eq + value + sep;
+    };
+    var str = &#39;&#39;,
+        p = void 0;
+
+    for (p in obj) {
+      var val = obj[p];
+      if (isArray(val)) {
+        for (var i = 0; i &lt; val.length; i++) {
+          str += getPart(p, isStringOrNumber(val[i]) ? val[i] : &#39;&#39;);
+        }
+      } else {
+        str += getPart(p, isStringOrNumber(val) ? val : &#39;&#39;);
+      }
+    }
+    return str.replace(new RegExp(&#39;\\&#39; + sep + &#39;$&#39;), &#39;&#39;);
+  }
+
+  var qs = {
+    parse: parse,
+    stringify: stringify
+  };
+
+<span id='Url'>  /**
+</span>   * url解析类
+   * @class Url
+   * @param {String} url字符串
+   *
+   *    @example
+   *    new Url(&#39;http://a.com?a=1&#39;).search // return &#39;?a=1&#39;
+   */
+  var Url = function () {
+    function Url(url) {
+      classCallCheck(this, Url);
+
+      if (!arguments.length) throw new TypeError(&#39;Invalid URL: undefined&#39;);
+      if (!isString(url)) throw new TypeError(&#39;Invalid URL: illegal type&#39; + (typeof url === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(url)));
+      var matched = url.match(/^([A-Za-z]+:)?(\/{0,3})(?:(\w*):(\w*)@)?([0-9.\-A-Za-z]+)(?::(\d+))?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i);
+      var href = matched[0];
+      var protocol = matched[1];
+      var slash = matched[2];
+      var username = matched[3];
+      var password = matched[4];
+      var hostname = matched[5];
+      var port = matched[6];
+      var pathname = matched[7];
+      var search = matched[8];
+      var hash = matched[9];
+      var host = hostname + (port ? &#39;:&#39; : &#39;&#39;) + port;
+      var origin = protocol + slash + host;
+
+      this.href = href;
+      this.origin = origin;
+      this.protocol = protocol;
+      this.username = username;
+      this.password = password;
+      this.host = host;
+      this.hostname = hostname;
+      this.port = port;
+      this.pathname = pathname;
+      this.search = search;
+      this.searchParams = new UrlSearchParams(this.search);
+      this.hash = hash;
+
+      return this;
+    }
+
+    createClass(Url, [{
+      key: &#39;toString&#39;,
+      value: function toString() {
+        return this.href;
+      }
+    }, {
+      key: &#39;toJSON&#39;,
+      value: function toJSON() {
+        return this.href;
+      }
+    }]);
+    return Url;
+  }();
+
+<span id='UrlSearchParams'>  /**
+</span>   * url search参数解析类
+   * @class UrlSearchParams
+   * @param {String|Object} 参数字符串或解析后的对象
+   *
+   *    @example
+   *    new UrlSearchParams(&#39;?a=1&amp;b=2&#39;).append(&#39;c&#39;, 2) // return &#39;a=1&amp;b=2&amp;c=2&#39;
+   */
+  var UrlSearchParams = function () {
+    function UrlSearchParams() {
+      var param = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : undefined;
+      classCallCheck(this, UrlSearchParams);
+
+      var obj = {};
+      if (isString(param)) {
+        obj = qs.parse(param);
+      } else if (isObject(param)) {
+        obj = param;
+      }
+      this._queryObject = obj;
+    }
+
+    createClass(UrlSearchParams, [{
+      key: &#39;append&#39;,
+      value: function append(name, value) {
+        if (this._queryObject[name]) {
+          var p = this._queryObject[name];
+          if (isArray(p)) {
+            p.push(value);
+          } else {
+            this._queryObject[name] = [p, value];
+          }
+        } else {
+          this._queryObject[name] = value;
+        }
+        return this.toString();
+      }
+    }, {
+      key: &#39;delete&#39;,
+      value: function _delete(name) {
+        delete this._queryObject[name];
+        return this.toString();
+      }
+      // entries() {}
+      // forEach(fn, thisArg) {}
+
+    }, {
+      key: &#39;get&#39;,
+      value: function get$$1(name) {
+        var value = this._queryObject[name];
+        if (isArray(value)) {
+          return value[0];
+        }
+        return this._queryObject[name] || null;
+      }
+    }, {
+      key: &#39;getAll&#39;,
+      value: function getAll(name) {
+        var value = this._queryObject[name];
+        if (isArray(value)) {
+          return value;
+        }
+        return value ? [value] : [];
+      }
+    }, {
+      key: &#39;has&#39;,
+      value: function has(name) {
+        return !!this._queryObject[name];
+      }
+      // keys() {}
+
+    }, {
+      key: &#39;set&#39;,
+      value: function set$$1(name, value) {
+        this._queryObject[name] = value;
+        return this.toString();
+      }
+      // sort() {}
+
+    }, {
+      key: &#39;toString&#39;,
+      value: function toString() {
+        return qs.stringify(this._queryObject);
+      }
+    }, {
+      key: &#39;values&#39;,
+      value: function values() {}
+    }]);
+    return UrlSearchParams;
+  }();
+
+
+
+  var uri = /*#__PURE__*/Object.freeze({
+    qs: qs,
+    Url: Url,
+    UrlSearchParams: UrlSearchParams
+  });
+
+  var Z = {};
+  var addDefault = function addDefault(o) {
+    Object.keys(o).forEach(function (v) {
+      Z[v] = o[v];
+    });
+  };
+
+  addDefault(module$1);
+  addDefault(type);
+  addDefault(common);
+  addDefault(classes);
+  addDefault(lib);
+  addDefault(uri);
+  // export default Object.assign({}, module, type, common, lib, classes, uri);
+
+  exports.default = Z;
   exports.env = env;
   exports.wxPreviewImage = wxPreviewImage;
   exports.is = is;
@@ -1233,8 +1629,6 @@
   exports.isNumber = isNumber;
   exports.isFloatNumber = isFloatNumber;
   exports.isEvenNumber = isEvenNumber;
-  exports.Storage = Storage;
-  exports.ImageLoader = ImageLoader;
   exports.versionCompare = versionCompare;
   exports.firstUpper = firstUpper;
   exports.trim = trim;
@@ -1247,8 +1641,15 @@
   exports.list = list;
   exports.randomItem = randomItem;
   exports.deepClone = deepClone;
+  exports.Storager = Storager;
+  exports.ImageLoader = ImageLoader;
+  exports.Validate = Validate;
+  exports.validator = validator;
   exports.debounce = debounce;
   exports.throttle = throttle;
+  exports.qs = qs;
+  exports.Url = Url;
+  exports.UrlSearchParams = UrlSearchParams;
 
   Object.defineProperty(exports, &#39;__esModule&#39;, { value: true });
 
