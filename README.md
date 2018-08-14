@@ -1,307 +1,343 @@
-## Constants
+# zcos
+公共方法集合
 
-<dl>
-<dt><a href="#isArray">isArray</a> ⇒ <code>Boolean</code></dt>
-<dd><p>是否是数组</p>
-</dd>
-</dl>
+### 安装
+`npm i zcos -S`
 
-## Functions
+### 使用
+```javascript
+const { env } = 'zcos';
+console.log(env.isIOS());
 
-<dl>
-<dt><a href="#list">list(length, fn)</a> ⇒ <code>Array</code></dt>
-<dd><p>列表快速生成</p>
-</dd>
-<dt><a href="#randomItem">randomItem(arr)</a> ⇒ <code>*</code></dt>
-<dd><p>随机返回数组中的一项</p>
-</dd>
-<dt><a href="#random">random(start, end, int)</a> ⇒ <code>Number</code></dt>
-<dd><p>生成一定范围内的随机数</p>
-</dd>
-<dt><a href="#firstUpper">firstUpper(str)</a> ⇒ <code>String</code></dt>
-<dd><p>首字母大写</p>
-</dd>
-<dt><a href="#trim">trim(str)</a> ⇒ <code>String</code></dt>
-<dd><p>去除字符串头尾空格</p>
-</dd>
-<dt><a href="#trimStart">trimStart(str)</a> ⇒ <code>String</code></dt>
-<dd><p>去除字符串头部空格</p>
-</dd>
-<dt><a href="#trimEnd">trimEnd(str)</a> ⇒ <code>String</code></dt>
-<dd><p>去除字符串尾部空格</p>
-</dd>
-<dt><a href="#camelCase">camelCase(str)</a> ⇒ <code>String</code></dt>
-<dd><p>转换字符串为驼峰命名法</p>
-</dd>
-<dt><a href="#capitalize">capitalize(str)</a> ⇒ <code>String</code></dt>
-<dd><p>转换字符串为首字母大写形式</p>
-</dd>
-<dt><a href="#isEmptyArray">isEmptyArray(arr)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>是否是空数组</p>
-</dd>
-<dt><a href="#isNumber">isNumber(num)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>是否是数字</p>
-</dd>
-<dt><a href="#isFloatNumber">isFloatNumber(num)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>是否是浮点数</p>
-</dd>
-<dt><a href="#isEvenNumber">isEvenNumber(num)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>是否是偶数</p>
-</dd>
-<dt><a href="#isEmptyObjectLike">isEmptyObjectLike(obj)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>是否是空对象或类对象</p>
-</dd>
-<dt><a href="#isObject">isObject(obj)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>是否是对象</p>
-</dd>
-<dt><a href="#isEmptyObject">isEmptyObject(obj)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>是否是空对象</p>
-</dd>
-</dl>
-
-<a name="isArray"></a>
-
-## isArray ⇒ <code>Boolean</code>
-是否是数组
-
-**Kind**: global constant  
-**Returns**: <code>Boolean</code> - 'true' if the value is Array, else 'false'.  
-**Datetime**: 2018-05-29T16:43:03+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| arr | <code>\*</code> | The value to check. |
-
-<a name="list"></a>
-
-## list(length, fn) ⇒ <code>Array</code>
-列表快速生成
-
-**Kind**: global function  
-**Returns**: <code>Array</code> - new array  
-**Datetime**: 2018-05-30T15:52:51+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| length | <code>Number</code> | length of list |
-| fn | <code>function</code> \| <code>Number</code> | a function to generate list item. if is Number, array will fill with it. |
-
-<a name="randomItem"></a>
-
-## randomItem(arr) ⇒ <code>\*</code>
-随机返回数组中的一项
-
-**Kind**: global function  
-**Returns**: <code>\*</code> - random item of array  
-**Datetime**: 2018-05-30T16:18:14+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| arr | <code>Array</code> | an array |
-
-<a name="random"></a>
-
-## random(start, end, int) ⇒ <code>Number</code>
-生成一定范围内的随机数
-
-**Kind**: global function  
-**Datetime**: 2018-05-30T11:37:21+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| start | <code>Number</code> | start of range |
-| end | <code>Number</code> | end of range |
-| int | <code>Boolean</code> | result is int if true, else is float |
-
-**Example**  
-```js
-random(7) // [0-7) float
-random(7, 10)  // [7-10) float
-random(7, 10, true) // [0-7) int
+const Z = 'zcos';
+console.log(Z.env.isIOS());
 ```
-<a name="firstUpper"></a>
 
-## firstUpper(str) ⇒ <code>String</code>
+### 文档
+
+**方法**
+
+##### isArray(any)
+判断是否数组
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isArray([]) // true
+  ```
+
+##### isEmptyArray(any)
+判断是否空数组
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isEmptyArray([]) // true
+  ```
+
+##### isString(any)
+判断是否是字符串
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isString('abc') // true
+  ```
+
+##### isNumberString(any)
+判断是否是数字字符串
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isNumberString('1234') // true
+  ```
+
+##### isFunction(any)
+判断是否是函数
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isFunction(function(){}) // true
+  ```
+
+##### isBoolean(any)
+判断是否是布尔类型
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isBoolean(true) // true
+  ```
+
+##### isNull(any)
+判断是否是null
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isNull(null) // true
+  ```
+
+##### isUndefined(any)
+判断是否是undefined
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isUndefined(undefined) // true
+  ```
+
+##### isNumber(any)
+判断是否是数字
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isNumber(1) // true
+  ```
+
+##### isFloatNumber(any)
+判断是否是浮点数
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isFloatNumber(1.2) // true
+  ```
+
+##### isEvenNumber(any)
+判断是否是偶数
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isEvenNumber(2) // true
+  ```
+
+##### isObject(any)
+判断是否是Object对象
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isObject({}) // true
+  ```
+
+##### isEmptyObject(any)
+判断是否是空对象
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isEmptyObject({}) // true
+  ```
+
+##### isObjectLike(any)
+判断是否是对象
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isObjectLike({}) // true
+  isObjectLike([]) // true
+  isObjectLike(function(){}) // true
+  ```
+
+##### isEmptyObjectLike(any)
+判断是否是空对象或数组
+- 参数:
+  - {any} any
+- 用法:
+  ```javascript
+  isEmptyObjectLike({}) // true
+  isEmptyObjectLike([]) // true
+  ```
+
+##### list(length, fn)
+快速生成指定长度和内容的数组
+- 参数:
+  - {Number} length 列表的长度
+  - {Function} fn 控制每一项内容的函数，接受两个参数，分别为undefined和当前项的数组索引
+- 用法:
+  ```javascript
+  list(4, (un, i) => i + 1) // [1, 2, 3, 4]
+  ```
+
+##### randomItem(arr)
+返回数组中的随机一项。如果参数是空数组，则返回undefined
+- 参数:
+  - {Array} arr 数组
+- 用法:
+  ```javascript
+  randomItem([1, 2, 3]) // 1 || 2 || 3
+  ```
+
+##### random(start, end, is_int)
+生成指定范围的随机数
+- 参数:
+  - {Number} start 随机数的起始范围
+  - {Number} [end] 随机数的结束范围 `可选`
+  - {Number} [is_int] 控制返回值是浮点数还是整数 `可选`
+- 用法:
+  ```javascript
+  random(7) // [0-7) 范围内的随机浮点数
+  random(7, 10)  // [7-10) 范围内的随机浮点数
+  random(7, 10, true) // [7-10] 范围内的随机整数
+  ```
+
+##### weightedRandom(weights)
+生成加权随机数
+- 参数:
+  - {Array|Object} weights 包含权重信息的数组或对象
+- 用法:
+  ```javascript
+  weightedRandom([3, 2, 2, 1]); // 参数是数组，每一项表示权重，返回对应数组下标
+  weightedRandom({ A: 3, B: 4, c: 1 }); // 参数是对象，每一对键值对的值表示权重，返回对应的键
+  ```
+
+##### deepClone(value)
+深拷贝指定的数组或对象
+- 参数:
+  - {Array|Object} value 数组或对象
+- 用法:
+  ```javascript
+  deepClone({ a: 1, c: [1, 2] })
+  ```
+
+##### firstUpper(str)
 首字母大写
+- 参数:
+  - {String} str 字符串
+- 用法:
+  ```javascript
+  firstUpper('hello') // 'Hello'
+  ```
 
-**Kind**: global function  
-**Returns**: <code>String</code> - new string  
-**Datetime**: 2018-05-29T19:24:06+0800  
-**Author**: daben<dabennn07@gmail.com>  
+##### trim(str)
+去除字符串首尾空格
+- 参数:
+  - {String} str 字符串
+- 用法:
+  ```javascript
+  trim('  hello  ') // 'hello'
+  ```
 
-| Param | Type | Description |
-| --- | --- | --- |
-| str | <code>String</code> | string to handle |
+##### trimStart(str)
+去除字符串首部空格
+- 参数:
+  - {String} str 字符串
+- 用法:
+  ```javascript
+  trimStart('  hello  ') // 'hello  '
+  ```
 
-<a name="trim"></a>
-
-## trim(str) ⇒ <code>String</code>
-去除字符串头尾空格
-
-**Kind**: global function  
-**Returns**: <code>String</code> - new string  
-**Datetime**: 2018-05-29T19:24:06+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| str | <code>String</code> | string to transform |
-
-<a name="trimStart"></a>
-
-## trimStart(str) ⇒ <code>String</code>
-去除字符串头部空格
-
-**Kind**: global function  
-**Returns**: <code>String</code> - new string  
-**Datetime**: 2018-05-29T19:24:06+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| str | <code>String</code> | string to transform |
-
-<a name="trimEnd"></a>
-
-## trimEnd(str) ⇒ <code>String</code>
+##### trimEnd(str)
 去除字符串尾部空格
+- 参数:
+  - {String} str 字符串
+- 用法:
+  ```javascript
+  trimStart('  hello  ') // '  hello'
+  ```
 
-**Kind**: global function  
-**Returns**: <code>String</code> - new string  
-**Datetime**: 2018-05-29T19:24:06+0800  
-**Author**: daben<dabennn07@gmail.com>  
+##### camelCase(str)
+转换字符串为驼峰写法
+- 参数:
+  - {String} str 字符串
+- 用法:
+  ```javascript
+  camelCase('hello-world') // 'helloWorld'
+  ```
 
-| Param | Type | Description |
-| --- | --- | --- |
-| str | <code>String</code> | string to transform |
-
-<a name="camelCase"></a>
-
-## camelCase(str) ⇒ <code>String</code>
-转换字符串为驼峰命名法
-
-**Kind**: global function  
-**Returns**: <code>String</code> - new string  
-**Datetime**: 2018-05-30T09:54:07+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| str | <code>String</code> | string to transform |
-
-<a name="capitalize"></a>
-
-## capitalize(str) ⇒ <code>String</code>
+##### capitalize(str)
 转换字符串为首字母大写形式
+- 参数:
+  - {String} str 字符串
+- 用法:
+  ```javascript
+  capitalize('hELLO World') // 'Hello world'
+  ```
 
-**Kind**: global function  
-**Returns**: <code>String</code> - new string  
-**Datetime**: 2018-05-30T10:00:00+0800  
-**Author**: daben<dabennn07@gmail.com>  
+##### versionCompare(v1, symbol, v2)
+比较版本号
+- 参数:
+  - {String} v1 版本号
+  - {String} symbol 比较符号 '=' '>' '<' '>='  '<='
+  - {String} v2 版本号
+- 用法:
+  ```javascript
+  versionCompare('0.0.1', '>', '0.1') // false
+  ```
 
-| Param | Type | Description |
-| --- | --- | --- |
-| str | <code>String</code> | string to transform |
+##### qs.parse(str, sep, eq)
+解析URL查询字符串
+- 参数:
+  - {String} str 要解析的url查询字符串
+  - {String} sep 用于界定查询字符串中的键值对的子字符串。默认为 '&'
+  - {String} eq 用于界定查询字符串中的键与值的子字符串。默认为 '='
+- 用法:
+  ```javascript
+  import { qs } from 'zcos';
+  qs.parse('a=1&a=2&b=3') // { a: [1, 2], b: 3 }
+  ```
 
-<a name="isEmptyArray"></a>
+##### qs.stringify(obj, sep, eq)
+序列化对象成为url查询字符串
+- 参数:
+  - {Object} obj 要序列化成 URL 查询字符串的对象
+  - {String} sep 用于界定查询字符串中的键值对的子字符串。默认为 '&'
+  - {String} eq 用于界定查询字符串中的键与值的子字符串。默认为 '='
+- 用法:
+  ```javascript
+  qs.stringify({ a: [1, 2], b: 3 }) // 'a=1&a=2&b=3'
+  ```
 
-## isEmptyArray(arr) ⇒ <code>Boolean</code>
-是否是空数组
+**类**
 
-**Kind**: global function  
-**Returns**: <code>Boolean</code> - 'true' if the value is emptyArray, else 'false'.  
-**Datetime**: 2018-05-29T16:45:33+0800  
-**Author**: daben<dabennn07@gmail.com>  
+##### new Url(url)
+url解析类
+- 参数:
+  - {String} url字符串
+- 用法:
+  ```javascript
+  new Url('http://a.com?a=1').search // return '?a=1'
+  ```
 
-| Param | Type | Description |
-| --- | --- | --- |
-| arr | <code>\*</code> | The value to check. |
+##### new Storager(key)
+本地储存类
+- 参数:
+  - {String} localStorage储存的键
+- 方法:
+  - add(obj) 添加数据
+  - set(key, value) 设置数据
+  - get(key) 获取数据
+  - remove(key) 删除键
+  - clear() 清空数据
+- 用法:
+  ```javascript
+  const store = new Storager('store_key');
+  store.set('a', 2);
+  store.get('a'); // 2
+  ```
 
-<a name="isNumber"></a>
+##### new Validate(value)
+验证类
+- 参数:
+  - {any} value 需要验证的值
+- 方法:
+  - `static` register(name, rule) 注册验证函数
+  - done() 获取验证结果
+- 用法:
+  ```javascript
+  Validate.register('isOne', {
+    validate: v => v == 1,
+    successMsg: '成功',
+    errorMsg: '失败'
+  })
+  new Validate('1').isOne().done() // { name: 'isOne', msg: '成功', status: 1 }
+  ```
 
-## isNumber(num) ⇒ <code>Boolean</code>
-是否是数字
-
-**Kind**: global function  
-**Returns**: <code>Boolean</code> - 'true' if the value is Number, else 'false'.  
-**Datetime**: 2018-05-29T16:40:41+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| num | <code>\*</code> | The value to check. |
-
-<a name="isFloatNumber"></a>
-
-## isFloatNumber(num) ⇒ <code>Boolean</code>
-是否是浮点数
-
-**Kind**: global function  
-**Returns**: <code>Boolean</code> - 'true' if the value is floatNumber, else 'false'.  
-**Datetime**: 2018-05-29T16:42:03+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| num | <code>\*</code> | The value to check. |
-
-<a name="isEvenNumber"></a>
-
-## isEvenNumber(num) ⇒ <code>Boolean</code>
-是否是偶数
-
-**Kind**: global function  
-**Returns**: <code>Boolean</code> - 'true' if the value is evenNumber, else 'false'.  
-**Datetime**: 2018-05-29T16:42:03+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| num | <code>\*</code> | The value to check. |
-
-<a name="isEmptyObjectLike"></a>
-
-## isEmptyObjectLike(obj) ⇒ <code>Boolean</code>
-是否是空对象或类对象
-
-**Kind**: global function  
-**Returns**: <code>Boolean</code> - 'true' if value is emptyObjectLike, else 'false'.  
-**Datetime**: 2018-05-29T16:49:15+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | <code>\*</code> | The value to check. |
-
-<a name="isObject"></a>
-
-## isObject(obj) ⇒ <code>Boolean</code>
-是否是对象
-
-**Kind**: global function  
-**Returns**: <code>Boolean</code> - 'true' if value is Object, else 'false'.  
-**Datetime**: 2018-05-29T16:56:13+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | <code>\*</code> | The value to check. |
-
-<a name="isEmptyObject"></a>
-
-## isEmptyObject(obj) ⇒ <code>Boolean</code>
-是否是空对象
-
-**Kind**: global function  
-**Returns**: <code>Boolean</code> - 'true' if value is emptyObject, else 'false'.  
-**Datetime**: 2018-05-29T16:56:17+0800  
-**Author**: daben<dabennn07@gmail.com>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | <code>\*</code> | The value to check. |
-
+### LICENSE
+MIT

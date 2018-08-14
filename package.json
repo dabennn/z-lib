@@ -1,6 +1,6 @@
 {
   "name": "zcos",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "a common methods lib",
   "main": "dist/z.js",
   "keywords": [
@@ -8,18 +8,20 @@
   ],
   "scripts": {
     "dev": "NODE_ENV=dev rollup -c build/rollup.config.dev.js -w",
-    "dev:test": "npm run test && npm run dev",
     "docs": "jsduck dist/z.js --output docs",
     "build": "NODE_ENV=prod rollup -c build/rollup.config.build.js",
-    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha -w -b --recursive"
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha -b --recursive",
+    "test:dev": "NODE_ENV=test ./node_modules/mocha/bin/mocha -w -b --recursive"
   },
   "author": "daben",
   "license": "MIT",
+  "sideEffects": false,
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-latest": "^6.24.1",
     "mocha": "^5.1.1",
+    "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-commonjs": "^9.1.3",
     "rollup-plugin-node-resolve": "^3.3.0",

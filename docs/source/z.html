@@ -16,10 +16,12 @@
 </head>
 <body onload="prettyPrint(); highlight();">
   <pre class="prettyprint lang-js">(function (global, factory) {
-  typeof exports === &#39;object&#39; &amp;&amp; typeof module !== &#39;undefined&#39; ? factory(exports) :
-  typeof define === &#39;function&#39; &amp;&amp; define.amd ? define([&#39;exports&#39;], factory) :
-  (factory((global.Z = {})));
-}(this, (function (exports) { &#39;use strict&#39;;
+  typeof exports === &#39;object&#39; &amp;&amp; typeof module !== &#39;undefined&#39; ? factory(exports, require(&#39;tickjs&#39;)) :
+  typeof define === &#39;function&#39; &amp;&amp; define.amd ? define([&#39;exports&#39;, &#39;tickjs&#39;], factory) :
+  (factory((global.Z = {}),null));
+}(this, (function (exports,Tick) { &#39;use strict&#39;;
+
+  Tick = Tick &amp;&amp; Tick.hasOwnProperty(&#39;default&#39;) ? Tick[&#39;default&#39;] : Tick;
 
 <span id='global-method-wxPreviewImage'>  /**
 </span>   * 微信图片预览
@@ -65,6 +67,46 @@
     return true;
   }
 
+  var _typeof = typeof Symbol === &quot;function&quot; &amp;&amp; typeof Symbol.iterator === &quot;symbol&quot; ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj &amp;&amp; typeof Symbol === &quot;function&quot; &amp;&amp; obj.constructor === Symbol &amp;&amp; obj !== Symbol.prototype ? &quot;symbol&quot; : typeof obj;
+  };
+
+  var classCallCheck = function (instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError(&quot;Cannot call a class as a function&quot;);
+    }
+  };
+
+  var createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i &lt; props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if (&quot;value&quot; in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  var toConsumableArray = function (arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i &lt; arr.length; i++) arr2[i] = arr[i];
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  };
+
 <span id='global-cfg-env'>  /**
 </span>   * 判断环境
    * @cfg {Object} env
@@ -74,6 +116,7 @@
    * @cfg {Function} [env.isAndroid] 判断是否安卓ua
    * @cfg {Function} [env.isUC] 判断是否uc浏览器ua
    * @cfg {Function} [env.isBroswer] 判断是否是浏览器环境
+   * @cfg {Function} [env.isNode] 判断是否是nodejs环境
    */
   var env = {
     isWeChat: function isWeChat() {
@@ -97,9 +140,19 @@
       );
     },
     isBroswer: function isBroswer() {
-      return typeof window !== &#39;undefined&#39;;
+      return (typeof self === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(self)) == &#39;object&#39; &amp;&amp; self !== null &amp;&amp; self.Object === Object;
+    },
+    isNode: function isNode() {
+      return (typeof global === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(global)) == &#39;object&#39; &amp;&amp; global !== null &amp;&amp; global.Object;
     }
   };
+
+
+
+  var module$1 = /*#__PURE__*/Object.freeze({
+    env: env,
+    wxPreviewImage: wxPreviewImage
+  });
 
 <span id='global-method-is'>  /**
 </span>   * 判断类型
@@ -112,21 +165,29 @@
     return Object.prototype.toString.call(o) === &#39;[object &#39; + type + &#39;]&#39;;
   }
 
-  var _typeof = typeof Symbol === &quot;function&quot; &amp;&amp; typeof Symbol.iterator === &quot;symbol&quot; ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj &amp;&amp; typeof Symbol === &quot;function&quot; &amp;&amp; obj.constructor === Symbol &amp;&amp; obj !== Symbol.prototype ? &quot;symbol&quot; : typeof obj;
-  };
+  function isString(str) {
+    return typeof str === &#39;string&#39;;
+  }
 
-  var toConsumableArray = function (arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = Array(arr.length); i &lt; arr.length; i++) arr2[i] = arr[i];
+  function isNumberString(str) {
+    return isString(str) &amp;&amp; /^\d+$/.test(str);
+  }
 
-      return arr2;
-    } else {
-      return Array.from(arr);
-    }
-  };
+  function isFunction(func) {
+    return typeof func === &#39;function&#39;;
+  }
+
+  function isBoolean(bool) {
+    return is(bool, &#39;Boolean&#39;);
+  }
+
+  function isNull(p) {
+    return p === null;
+  }
+
+  function isUndefined(p) {
+    return p === undefined;
+  }
 
 <span id='global-method-isEmptyObjectLike'>  /**
 </span>   * 是否是空对象或类对象
@@ -151,6 +212,16 @@
    */
   function isObject(obj) {
     return is(obj, &#39;Object&#39;);
+  }
+<span id='global-method-isObjectLike'>  /**
+</span>   * 是否是typeof值为&#39;object&#39;或&#39;function&#39;的对象
+   * @author   daben&lt;dabennn07@gmail.com&gt;
+   * @param    {*}                   obj  The value to check.
+   * @return   {Boolean}             &#39;true&#39; if value is ObjectLike, else &#39;false&#39;.
+   */
+  function isObjectLike(obj) {
+    var type = typeof obj === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(obj);
+    return obj !== null &amp;&amp; (type === &#39;object&#39; || type === &#39;function&#39;);
   }
 <span id='global-method-isEmptyObject'>  /**
 </span>   * 是否是空对象
@@ -209,6 +280,27 @@
   function isEvenNumber(num) {
     return isNumber(num) &amp;&amp; !(num % 2);
   }
+
+
+
+  var type = /*#__PURE__*/Object.freeze({
+    is: is,
+    isString: isString,
+    isNumberString: isNumberString,
+    isFunction: isFunction,
+    isBoolean: isBoolean,
+    isNull: isNull,
+    isUndefined: isUndefined,
+    isArray: isArray,
+    isEmptyArray: isEmptyArray,
+    isEmptyObjectLike: isEmptyObjectLike,
+    isObject: isObject,
+    isObjectLike: isObjectLike,
+    isEmptyObject: isEmptyObject,
+    isNumber: isNumber,
+    isFloatNumber: isFloatNumber,
+    isEvenNumber: isEvenNumber
+  });
 
 <span id='global-method-firstUpper'>  /**
 </span>   * 首字母大写
@@ -279,7 +371,7 @@
    * @example
    * random(7) // [0-7) float
    * random(7, 10)  // [7-10) float
-   * random(7, 10, true) // [0-7) int
+   * random(7, 10, true) // [7-10] int
    *
    * @return   {Number}
    */
@@ -302,9 +394,54 @@
     }
     var baseRandom = Math.random() * (end - start);
     if (int) {
-      baseRandom = Math.floor(baseRandom);
+      baseRandom = Math.ceil(baseRandom);
     }
     return baseRandom + start;
+  }
+<span id='global-method-weightedRandom'>  /**
+</span>   * 生成加权随机数
+   * @param {Array|Object} weights 加权列表
+   *
+   * @example
+   *    weightedRandom([3, 2, 2, 1]); // 返回下表0、1、2、3中的一项
+   *    weightedRandom({ A: 3, B: 4, c: 1 }); // 返回键A、B、c中的一项
+   *
+   * @return {Number|String} 返回一个数组下标或对象的键
+   */
+  function weightedRandom(weights) {
+    if (!isArray(weights) &amp;&amp; !isObject(weights)) {
+      throw TypeError(&#39;Invalid type of &#39; + weights + &#39;,must be Array or Object&#39;);
+    }
+    var result = 0;
+    function _randomIndex(l) {
+      var sum = l.reduce(function (a, b) {
+        return a + b;
+      });
+      var r = random(0, sum, true);
+      var cur = 0;
+      var res = 0;
+      for (var i = 0; i &lt; l.length; i++) {
+        cur += l[i];
+        if (r &lt;= cur) {
+          res = i;
+          break;
+        }
+      }
+      return res;
+    }
+    if (isArray(weights)) {
+      weights = Array.prototype.slice.call(weights);
+      result = _randomIndex(weights);
+    } else if (isObject(weights)) {
+      var keys = [];
+      var values = [];
+      for (var p in weights) {
+        keys.push(p);
+        values.push(weights[p]);
+      }
+      result = keys[_randomIndex(values)];
+    }
+    return result;
   }
 
 <span id='global-method-list'>  /**
@@ -319,7 +456,7 @@
     var fn = arguments.length &gt; 1 &amp;&amp; arguments[1] !== undefined ? arguments[1] : function () {};
 
     if (isNumber(fn)) {
-      fn = new Function(&#39;return &#39; + fn);
+      fn = Function(&#39;return &#39; + fn);
     }
     if (!is(fn, &#39;Function&#39;)) {
       throw new TypeError(&#39;Expected a Function&#39;);
@@ -344,215 +481,42 @@
     return arr[random(arr.length - 1, true)];
   }
 
-  var commonjsGlobal = typeof window !== &#39;undefined&#39; ? window : typeof global !== &#39;undefined&#39; ? global : typeof self !== &#39;undefined&#39; ? self : {};
+  var objList = [];
 
-  function createCommonjsModule(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  function copyObjectLike(value) {
+    var newObj = new value.constructor();
+    var p = void 0;
+    objList.push(value);
+
+    for (p in value) {
+      var index = objList.indexOf(value[p]);
+      if (index &gt; -1) {
+        // 处理循环引用
+        newObj[p] = objList[index];
+      } else {
+        newObj[p] = deepClone(value[p]);
+      }
+    }
+    return newObj;
   }
 
-  var tick = createCommonjsModule(function (module, exports) {
-  (function (global, factory) {
-    module.exports = factory();
-  }(commonjsGlobal, (function () {
-    Object.setPrototypeOf = Object.setPrototypeOf || function (obj, proto) {
-      obj.__proto__ = proto;
-      return obj;
-    };
-
-<span id='Tick'>    /**
-</span>     * Tick 日期处理
-     * @param 同Date类接受的参数
-     * @example
-     * new Tick(Date.now()).format(&#39;YYYY-MM-DD&#39;)
-     * new Tick(Date.now()).getMap()
-     * new Tick(Date.now()).getDiff()
-     */
-    function Tick() {
-      if (/^\d{10}$/.test(arguments[0])) {
-        arguments[0] = arguments[0] * 1000;
-      }
-      if (typeof arguments[0] === &#39;string&#39; &amp;&amp; /[-.]/.test(arguments[0])) {
-        arguments[0] = arguments[0].replace(/[-.]/g, &#39;/&#39;);
-      }
-      var DateInstance = new (Function.prototype.bind.apply(Date, [Date].concat(Array.prototype.slice.call(arguments))))();
-
-      if (DateInstance.toString() === &#39;Invalid Date&#39;) throw TypeError(&#39;Invalid time input: &#39; + arguments[0]);
-
-      Tick.prototype._timestamp = DateInstance.getTime();
-      Tick.prototype._year = DateInstance.getFullYear();
-      Tick.prototype._month = DateInstance.getMonth() + 1;
-      Tick.prototype._week = DateInstance.getDay();
-      Tick.prototype._day = DateInstance.getDate();
-      Tick.prototype._hour = DateInstance.getHours();
-      Tick.prototype._minute = DateInstance.getMinutes();
-      Tick.prototype._second = DateInstance.getSeconds();
-
-      Object.setPrototypeOf(DateInstance, Tick.prototype);
-      return DateInstance;
+<span id='global-method-deepClone'>  /**
+</span>   * 对象、数组深拷贝
+   * @param {*} value 需要拷贝的对象
+   * @example
+   *    deepClone({ a: 1, b: [1, 2] });
+   *
+   * @return {*} 新的对象或数组，非{}、[]数据原样返回
+   */
+  function deepClone(value) {
+    if (!isObjectLike(value)) return value;
+    if (isArray(value) || isObject(value)) {
+      return copyObjectLike(value);
     }
+    return value;
+  }
 
-    Object.setPrototypeOf(Tick.prototype, Date.prototype);
-
-    var SECOND = 1000;
-    var MINUTE = SECOND * 60;
-    var HOUR = MINUTE * 60;
-    var DAY = HOUR * 24;
-    var MONTH = DAY * 30;
-    var YEAR = DAY * 365;
-    var WEEK_LIST = [&#39;日&#39;, &#39;一&#39;, &#39;二&#39;, &#39;三&#39;, &#39;四&#39;, &#39;五&#39;, &#39;六&#39;];
-
-    function bit2Ten(num) {
-      return +num &lt; 10 ? &#39;0&#39; + num : num + &#39;&#39;;
-    }
-
-<span id='Tick-method-format'>    /**
-</span>       * 格式化时间
-       * @param {string} timeTpl 日期格式化模板字符串 Y-年 M-月 D-日 h-时 m-分 s-秒
-       * @return {string} 格式化后的字符串
-       */
-    Tick.prototype.format = function () {
-      var timeTpl = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : &#39;YYYY-MM-DD hh:mm:ss&#39;;
-
-      return timeTpl.replace(&#39;YYYY&#39;, this._year).replace(&#39;Mm&#39;, this._month).replace(&#39;Dd&#39;, this._day).replace(&#39;WW&#39;, &#39;周&#39; + WEEK_LIST[this._week]).replace(&#39;MM&#39;, bit2Ten(this._month)).replace(&#39;DD&#39;, bit2Ten(this._day)).replace(&#39;hh&#39;, bit2Ten(this._hour)).replace(&#39;mm&#39;, bit2Ten(this._minute)).replace(&#39;ss&#39;, bit2Ten(this._second));
-    };
-<span id='Tick-method-getMap'>    /**
-</span>     * 获取对象形式的时间解析结果
-     * @return {object} 包含具体时间解析的对象
-     */
-    Tick.prototype.getMap = function () {
-      return {
-        year: this._year,
-        month: this._month,
-        day: this._day,
-        hour: this._hour,
-        minute: this._minute,
-        second: this._second,
-        $year: bit2Ten(this._year),
-        $month: bit2Ten(this._month),
-        $day: bit2Ten(this._day),
-        $hour: bit2Ten(this._hour),
-        $minute: bit2Ten(this._minute),
-        $second: bit2Ten(this._second)
-      };
-    };
-<span id='Tick-method-getDiff'>    /**
-</span>     * 多久前 用于评论等显示 &quot;多久前&quot;
-     * @return {string} 多久前的字符串 &quot;刚刚&quot; &quot;2天前&quot;
-     */
-    Tick.prototype.getDiff = function () {
-      var diffValue = Date.now() - this._timestamp;
-
-      if (diffValue &lt; 0) {
-        return &#39;刚刚&#39;;
-      }
-
-      var diffYear = Math.floor(diffValue / YEAR);
-      var diffMonth = Math.floor(diffValue / MONTH);
-      var diffDay = Math.floor(diffValue / DAY);
-      var diffHour = Math.floor(diffValue / HOUR);
-      var diffMinute = Math.floor(diffValue / MINUTE);
-      var diffSecond = Math.floor(diffValue / SECOND);
-
-      if (diffYear &gt;= 1) {
-        return diffYear + &#39;\u5E74\u524D&#39;;
-      } else if (12 &gt; diffMonth &amp;&amp; diffMonth &gt;= 1) {
-        return diffMonth + &#39;\u4E2A\u6708\u524D&#39;;
-      } else if (30 &gt; diffDay &amp;&amp; diffDay &gt;= 1) {
-        return diffDay + &#39;\u5929\u524D&#39;;
-      } else if (60 &gt; diffHour &amp;&amp; diffHour &gt;= 1) {
-        return diffHour + &#39;\u5C0F\u65F6\u524D&#39;;
-      } else if (60 &gt; diffMinute &amp;&amp; diffMinute &gt;= 1) {
-        return diffMinute + &#39;\u5206\u949F\u524D&#39;;
-      } else if (60 &gt; diffSecond &amp;&amp; diffSecond &gt;= 0) {
-        return &#39;刚刚&#39;;
-      }
-    };
-
-<span id='Tick-method-offset'>    /**
-</span>     * 计算多久之前或后一段时间
-     * @param {string} offset 之前或之后多少时间
-     */
-    Tick.prototype.offset = function () {
-      var offset = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : &#39;&#39;;
-
-      var isBefore = /^-/.test(offset);
-      offset = offset.replace(/[+-]g/, &#39;&#39;);
-      var signs = {
-        D: DAY,
-        h: HOUR,
-        m: MINUTE,
-        s: SECOND
-      };
-
-      var n = &#39;&#39;;
-      var t = 0;
-      for (var i = 0; i &lt; offset.length; i++) {
-        var s = offset[i];
-        if (/\d/.test(s)) {
-          n += s;
-        } else {
-          if (s === &#39;Y&#39;) {
-            n = +n;
-            this.setFullYear(isBefore ? this.getFullYear() - n : this.getFullYear() + n);
-            n = &#39;&#39;;
-          } else if (s === &#39;M&#39;) {
-            n = +n;
-            if (n &gt;= 12) {
-              var q = n % 12;
-              var y = Math.floor(n / 12);
-              this.setFullYear(isBefore ? this.getFullYear() - y : this.getFullYear() + y);
-              this.setMonth(isBefore ? this.getMonth() - q : this.getMonth() + q);
-              n = &#39;&#39;;
-            } else {
-              this.setMonth(isBefore ? this.getMonth() - n : this.getMonth() + n);
-              n = &#39;&#39;;
-            }
-          } else {
-            t += n * (signs[s] || 0);
-            n = &#39;&#39;;
-          }
-        }
-      }
-      t = isBefore ? -t : t;
-      return new Tick(this.getTime() + t);
-    };
-
-<span id='Tick-method-isBefore'>    /**
-</span>     * 比较时间的三个方法
-     * @Author   daben&lt;dabennn07@gmail.com&gt;
-     * @DateTime 2018-05-21T23:22:08+0800
-     * @param    {String|Number}                 date 任何可以被Date对象解析的时间
-     * @return   {Boolean}
-     */
-    Tick.prototype.isBefore = function (date) {
-      return this._timestamp &lt; new Tick(date).getTime();
-    };
-
-    Tick.prototype.isAfter = function (date) {
-      return this._timestamp &gt; new Tick(date).getTime();
-    };
-
-    Tick.prototype.isEqual = function (date) {
-      return this._timestamp === new Tick(date).getTime();
-    };
-
-<span id='Tick-method-isLeapYear'>    /**
-</span>     * 判断是否是闰年
-     * @Author   daben&lt;dabennn07@gmail.com&gt;
-     * @DateTime 2018-05-22T00:06:59+0800
-     * @param    {Number}                   year 年份
-     * @return   {Boolean}
-     */
-    Tick.isLeapYear = function (year) {
-      return year % 4 === 0 &amp;&amp; year % 100 !== 0 || year % 400 === 0;
-    };
-
-    return Tick;
-
-  })));
-  });
-
-<span id='Tick-method-versionCompare'>  /**
+<span id='global-method-versionCompare'>  /**
 </span>   * 版本号比较
    * @param {String} v1              版本号
    * @param {String} symbol          比较符号 &#39;=&#39; &#39;&gt;&#39; &#39;&lt;&#39; &#39;&gt;=&#39;  &#39;&lt;=&#39;
@@ -606,13 +570,1061 @@
     return symbol.indexOf(compare()) !== -1;
   }
 
+
+
+  var common = /*#__PURE__*/Object.freeze({
+    versionCompare: versionCompare,
+    firstUpper: firstUpper,
+    trim: trim,
+    trimStart: trimStart,
+    trimEnd: trimEnd,
+    camelCase: camelCase,
+    capitalize: capitalize,
+    random: random,
+    weightedRandom: weightedRandom,
+    list: list,
+    randomItem: randomItem,
+    deepClone: deepClone
+  });
+
+  function typeErr(except, got) {
+    return TypeError(&#39;Except \&#39;&#39; + except + &#39;\&#39;, got \&#39;&#39; + got + &#39;\&#39;&#39;);
+  }
+
+  function registerDefaultValidate(Validate) {
+    // 不能少于多少个字符
+    Validate.register(&#39;minLength&#39;, {
+      validate: function validate(v, limit) {
+        this.rules.minLength.errorMsg = &#39;最小不能少于&#39; + limit + &#39;个字符&#39;;
+        return String(v).length &gt;= limit;
+      },
+      successMsg: &#39;验证成功&#39;,
+      errorMsg: &#39;长度错误&#39;
+    });
+    // 不能多于多少个字符
+    Validate.register(&#39;maxLength&#39;, {
+      validate: function validate(v, limit) {
+        this.rules.maxLength.errorMsg = &#39;最大不能超过&#39; + limit + &#39;个字符&#39;;
+        return String(v).length &lt;= limit;
+      },
+      successMsg: &#39;验证成功&#39;,
+      errorMsg: &#39;长度错误&#39;
+    });
+    // 验证手机号码
+    Validate.register(&#39;isMoblie&#39;, {
+      validate: function validate(v) {
+        return (/^1\d{10}$/.test(v)
+        );
+      },
+      successMsg: &#39;验证成功&#39;,
+      errorMsg: &#39;请输入有效的手机号码&#39;
+    });
+  }
+
+  var rulesCache = {};
+
+<span id='register'>  /**
+</span>   * 验证类
+   * @class Validate
+   * @param {Any} 需要验证的值
+   * @method register 注册验证函数
+   * @method done 返回验证结果
+   */
+  var Validate = function () {
+    function Validate(value) {
+      classCallCheck(this, Validate);
+
+      this.value = value;
+      this.rules = rulesCache;
+      this.lastResult = {
+        name: &#39;VALIDATE_NAME&#39;,
+        status: true,
+        msg: &#39;VALIDATE_MASSAGE&#39;
+      };
+
+      registerDefaultValidate(Validate);
+    }
+
+<span id='register-method-'>    /**
+</span>     * 注册验证函数
+     * @param {String} name 验证函数名
+     * @param {Object} rule 验证规则对象
+     * @param {Function} [rule.validate] 验证函数。接受多个参数，第一个参数是需要验证的值，其他参数依次为调用时传入的参数
+     * @param {String} [rule.successMsg] 成功的提示
+     * @param {String} [rule.errorMsg] 失败的提示
+     */
+
+
+    createClass(Validate, [{
+      key: &#39;done&#39;,
+      value: function done() {
+        return this.lastResult;
+      }
+    }], [{
+      key: &#39;register&#39;,
+      value: function register(name, rule) {
+        if (!isFunction(rule.validate)) throw typeErr(&#39;function&#39;, rule.validate);
+        if (!isString(rule.successMsg)) throw typeErr(&#39;string&#39;, rule.successMsg);
+        if (!isString(rule.errorMsg)) throw typeErr(&#39;string&#39;, rule.errorMsg);
+
+        rulesCache[name] = {
+          name: name,
+          validate: rule.validate,
+          successMsg: rule.successMsg,
+          errorMsg: rule.errorMsg
+        };
+
+        Validate.prototype[name] = function () {
+          var _rule$validate;
+
+          if (!this.lastResult.status) {
+            return this;
+          }
+          var _rule = this.rules[name];
+
+          for (var _len = arguments.length, args = Array(_len), _key = 0; _key &lt; _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          var status = (_rule$validate = _rule.validate).call.apply(_rule$validate, [this, this.value].concat(args));
+          if (!!status) {
+            this.lastResult = {
+              name: name,
+              status: true,
+              msg: _rule.successMsg
+            };
+          } else {
+            this.lastResult = {
+              name: name,
+              status: false,
+              msg: _rule.errorMsg
+            };
+          }
+          return this;
+        };
+      }
+    }]);
+    return Validate;
+  }();
+
+<span id='register-method-validator'>  /**
+</span>   * 验证器
+   * @param {Any} 验证的值
+   * @param {Array|Object} 验证函数配置
+   * @return Validate实例
+   *
+   *    @example
+   *    let ret = validator(1).minLength(4).done()
+   *    console.log(ret.name, ret.msg, ret.status) // &#39;minLength&#39;, &#39;最小不能少于4个字符&#39;, false
+   */
+  function validator(value, options) {
+    if (isObjectLike(options)) {
+      for (var p in options) {
+        Validate.register(p.name || p, options[p]);
+      }
+    }
+    return new Validate(value);
+  }
+
+<span id='Storager'>  /**
+</span>   * 本地储存
+   * @class Storager
+   * @param {String} key localStorage键
+   *
+   *    @example
+   *    const store = new Storager(&#39;store_key&#39;);
+   *    store.add({ a: 1 });
+   *    store.set(&#39;a&#39;, 2);
+   *    let a = store.get(&#39;a&#39;); // 2
+   */
+
+  var Storager = function () {
+    function Storager(key) {
+      classCallCheck(this, Storager);
+
+      if (!isString(key)) {
+        throw new TypeError(&#39;Storage Key must be String&#39;);
+      }
+      if (!key) {
+        throw new Error(&#39;Empty String is not allow&#39;);
+      }
+      this.STORAGE_KEY = key;
+
+      this._init();
+    }
+
+    createClass(Storager, [{
+      key: &#39;_init&#39;,
+      value: function _init() {
+        var value = localStorage[this.STORAGE_KEY];
+        if (!value) {
+          Storager.setItem(this.STORAGE_KEY, &#39;&#39;);
+        }
+      }
+<span id='Storager-method-'>      /**
+</span>       * 添加数据
+       * @param {Object} obj 对象形式的数据
+       * @return this
+       */
+
+    }, {
+      key: &#39;add&#39;,
+      value: function add() {
+        var obj = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : {};
+
+        if (!isObject(obj)) throw new TypeError(&#39;Invalid Object: &#39; + obj);
+        try {
+          var storage = Storager.getItem(this.STORAGE_KEY);
+          if (storage) {
+            obj = Object.assign(JSON.parse(storage), obj);
+          }
+          Storager.setItem(this.STORAGE_KEY, JSON.stringify(obj));
+        } catch (e) {
+          throw new Error(e);
+        }
+        return this;
+      }
+<span id='Storager-method-'>      /**
+</span>       * 根据键设置数据
+       * @param {String} key 键
+       * @param {Any} value 值
+       */
+
+    }, {
+      key: &#39;set&#39;,
+      value: function set$$1(key, value) {
+        var storage = this.get();
+        storage[key] = value;
+        Storager.setItem(this.STORAGE_KEY, JSON.stringify(storage));
+        return this;
+      }
+<span id='Storager-method-'>      /**
+</span>       * 根据键获取数据
+       * @param {String} key 键
+       */
+
+    }, {
+      key: &#39;get&#39;,
+      value: function get$$1() {
+        var key = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : &#39;&#39;;
+
+        if (!isString(key)) return null;
+        try {
+          var storage = JSON.parse(Storager.getItem(this.STORAGE_KEY)) || {};
+          if (!key) return storage;
+          return storage[key];
+        } catch (e) {
+          console.warn(e);
+          return {};
+        }
+      }
+<span id='Storager-method-'>      /**
+</span>       * 根据键删除数据
+       * @param {String} key 键
+       */
+
+    }, {
+      key: &#39;remove&#39;,
+      value: function remove() {
+        var key = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : &#39;&#39;;
+
+        var storage = this.get();
+        delete storage[key];
+        Storager.setItem(this.STORAGE_KEY, JSON.stringify(storage));
+        return this;
+      }
+<span id='Storager-property-'>      /**
+</span>       * 清除数据
+       */
+
+    }, {
+      key: &#39;clear&#39;,
+      value: function clear() {
+        Storager.removeItem(this.STORAGE_KEY);
+      }
+    }], [{
+      key: &#39;setItem&#39;,
+      value: function setItem() {
+        var _localStorage;
+
+        (_localStorage = localStorage).setItem.apply(_localStorage, arguments);
+      }
+    }, {
+      key: &#39;getItem&#39;,
+      value: function getItem() {
+        var _localStorage2;
+
+        return (_localStorage2 = localStorage).getItem.apply(_localStorage2, arguments);
+      }
+    }, {
+      key: &#39;removeItem&#39;,
+      value: function removeItem() {
+        var _localStorage3;
+
+        (_localStorage3 = localStorage).removeItem.apply(_localStorage3, arguments);
+      }
+    }, {
+      key: &#39;clearAll&#39;,
+      value: function clearAll() {
+        localStorage.clear();
+      }
+    }]);
+    return Storager;
+  }();
+
+<span id='ImageLoader'>  /**
+</span>   * 图片加载器
+   * @class ImageLoader
+   * @param {String|Array} uri 图片路径或包含路径的数组
+   * @param {Object} options 配置项
+   * @param {Function} [options.compelete] 加载完成回调
+   * @param {Function} [options.progress] 加载进度回调
+   *
+   *    @example
+   *    const pics = [
+   *      { name: xx, uri: xxx },
+   *      { name: xx, uri: xxx },
+   *    ];
+   *    const loader = new ImageLoader(pics);
+   *    loader.on(&#39;progress&#39;, (percent) =&gt; {
+   *      xxx
+   *    });
+   *    loader.on(&#39;compelete&#39;, (suc, fail) =&gt; {
+   *      xxx
+   *    });
+   *    loader.load();
+   */
+
+  var ImageLoader = function () {
+    function ImageLoader() {
+      classCallCheck(this, ImageLoader);
+
+      this._loading = false;
+      this._index = 0;
+      this.list = [];
+      this.queue = [];
+      this.success = [];
+      this.failed = [];
+      this.count = 0;
+      this.compelete = function () {};
+      this.progress = function () {};
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key &lt; _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      this._init(args);
+    }
+
+    createClass(ImageLoader, [{
+      key: &#39;_init&#39;,
+      value: function _init(args) {
+        if (!args.length) return;
+        if (isString(args[0]) || isArray(args[0])) {
+          ths.add(args[0]);
+        }
+        if (isObject(args[1])) {
+          if (!isFunction(args[1].compelete) || !isFunction(args[1].progress)) throw new TypeError(&#39;Must be a function&#39;);
+          this.compelete = args[1].compelete;
+          this.progress = args[1].progress;
+        }
+      }
+<span id='ImageLoader-method-'>      /**
+</span>       * 注册回调
+       * @param {String} name 回调名称
+       * @param {Function} cb 回调函数
+       */
+
+    }, {
+      key: &#39;on&#39;,
+      value: function on(name) {
+        var cb = arguments.length &gt; 1 &amp;&amp; arguments[1] !== undefined ? arguments[1] : function () {};
+
+        if (!isFunction(cb)) throw new TypeError(cb + &#39;is not a function&#39;);
+        if (name !== &#39;compelete&#39; &amp;&amp; name !== &#39;progress&#39;) return;
+        this[name] = cb;
+      }
+<span id='ImageLoader-method-'>      /**
+</span>       * 添加图片
+       * @param {String|Array} uri 图片路径或包含路径的数组
+       * @example
+       * 接受字符串形式的路径 add(&#39;xxx&#39;)
+       * 字符串数组形式的路径 add([&#39;xxx&#39;, &#39;xxx&#39;])
+       * 对象数组形式的路径 add([{ name: &#39;xxx&#39;, uri: &#39;xxx&#39; }, { name: &#39;xxx&#39;, uri: &#39;xxx&#39; }])
+       */
+
+    }, {
+      key: &#39;add&#39;,
+      value: function add(uri) {
+        if (!isString(uri) &amp;&amp; !isArray(uri)) {
+          throw new TypeError(&#39;Just allow Array or String&#39;);
+        }
+        if (isString(uri)) {
+          uri = [{ name: &#39;image$&#39; + this._index, uri: uri }];
+        }
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = uri[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var p = _step.value;
+
+            var item = {};
+            if (isString(p)) {
+              item.name = &#39;image$&#39; + this._index;
+              item.uri = p;
+            } else {
+              if (!p.uri) throw new Error(&#39;Missing image uri&#39;);
+              item.name = p.name ? p.name : &#39;image$&#39; + this._index;
+              item.uri = p.uri;
+            }
+            this.list.push(item);
+            this._index++;
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion &amp;&amp; _iterator.return) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        return this;
+      }
+<span id='ImageLoader-property-'>      /**
+</span>       * 开始加载
+       */
+
+    }, {
+      key: &#39;load&#39;,
+      value: function load() {
+        var _this = this;
+
+        if (!this._loading) {
+          var _queue;
+
+          (_queue = this.queue).push.apply(_queue, toConsumableArray(this.list));
+          this._loading = true;
+        }
+        if (!this.queue.length) {
+          this._loading = false;
+          this.compelete(this.success, this.failed);
+          return;
+        }
+        var item = this.queue[0];
+        var image = new Image();
+        var successFn = function successFn() {
+          var cur = _this.queue.shift();
+          cur.image = image;
+          _this.count++;
+          _this.success.push(cur);
+          _this.progress(_this.count / _this.list.length);
+          _this.load();
+        };
+        var errorFn = function errorFn(err) {
+          var cur = _this.queue.shift();
+          cur.error = err;
+          _this.failed.push(cur);
+          console.error(err);
+          _this.load();
+        };
+
+        image.src = item.uri;
+
+        if (image.complete) {
+          successFn();
+        } else {
+          image.addEventListener(&#39;load&#39;, successFn, false);
+          image.addEventListener(&#39;error&#39;, errorFn, false);
+        }
+      }
+    }]);
+    return ImageLoader;
+  }();
+
+
+
+  var classes = /*#__PURE__*/Object.freeze({
+    Storager: Storager,
+    ImageLoader: ImageLoader,
+    Validate: Validate,
+    validator: validator
+  });
+
+<span id='ImageLoader-property-freeGlobal'>  /** Detect free variable `global` from Node.js. */
+</span>  var freeGlobal = (typeof global === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(global)) == &#39;object&#39; &amp;&amp; global !== null &amp;&amp; global.Object === Object &amp;&amp; global;
+
+<span id='ImageLoader-property-freeSelf'>  /** Detect free variable `self`. */
+</span>  var freeSelf = (typeof self === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(self)) == &#39;object&#39; &amp;&amp; self !== null &amp;&amp; self.Object === Object &amp;&amp; self;
+
+<span id='ImageLoader-property-root'>  /** Used as a reference to the global object. */
+</span>  var root = freeGlobal || freeSelf || Function(&#39;return this&#39;)();
+
+<span id='ImageLoader-method-debounce'>  /**
+</span>   * Creates a debounced function that delays invoking `func` until after `wait`
+   * milliseconds have elapsed since the last time the debounced function was
+   * invoked, or until the next browser frame is drawn. The debounced function
+   * comes with a `cancel` method to cancel delayed `func` invocations and a
+   * `flush` method to immediately invoke them. Provide `options` to indicate
+   * whether `func` should be invoked on the leading and/or trailing edge of the
+   * `wait` timeout. The `func` is invoked with the last arguments provided to the
+   * debounced function. Subsequent calls to the debounced function return the
+   * result of the last `func` invocation.
+   *
+   * **Note:** If `leading` and `trailing` options are `true`, `func` is
+   * invoked on the trailing edge of the timeout only if the debounced function
+   * is invoked more than once during the `wait` timeout.
+   *
+   * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
+   * until the next tick, similar to `setTimeout` with a timeout of `0`.
+   *
+   * If `wait` is omitted in an environment with `requestAnimationFrame`, `func`
+   * invocation will be deferred until the next frame is drawn (typically about
+   * 16ms).
+   *
+   * See [David Corbacho&#39;s article](https://css-tricks.com/debouncing-throttling-explained-examples/)
+   * for details over the differences between `debounce` and `throttle`.
+   *
+   * @since 0.1.0
+   * @category Function
+   * @param {Function} func The function to debounce.
+   * @param {number} [wait=0]
+   *  The number of milliseconds to delay; if omitted, `requestAnimationFrame` is
+   *  used (if available).
+   * @param {Object} [options={}] The options object.
+   * @param {boolean} [options.leading=false]
+   *  Specify invoking on the leading edge of the timeout.
+   * @param {number} [options.maxWait]
+   *  The maximum time `func` is allowed to be delayed before it&#39;s invoked.
+   * @param {boolean} [options.trailing=true]
+   *  Specify invoking on the trailing edge of the timeout.
+   * @returns {Function} Returns the new debounced function.
+   * @example
+   *
+   * // Avoid costly calculations while the window size is in flux.
+   * jQuery(window).on(&#39;resize&#39;, debounce(calculateLayout, 150))
+   *
+   * // Invoke `sendMail` when clicked, debouncing subsequent calls.
+   * jQuery(element).on(&#39;click&#39;, debounce(sendMail, 300, {
+   *   &#39;leading&#39;: true,
+   *   &#39;trailing&#39;: false
+   * }))
+   *
+   * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
+   * const debounced = debounce(batchLog, 250, { &#39;maxWait&#39;: 1000 })
+   * const source = new EventSource(&#39;/stream&#39;)
+   * jQuery(source).on(&#39;message&#39;, debounced)
+   *
+   * // Cancel the trailing debounced invocation.
+   * jQuery(window).on(&#39;popstate&#39;, debounced.cancel)
+   *
+   * // Check for pending invocations.
+   * const status = debounced.pending() ? &quot;Pending...&quot; : &quot;Ready&quot;
+   */
+  function debounce(func, wait, options) {
+    var lastArgs = void 0,
+        lastThis = void 0,
+        maxWait = void 0,
+        result = void 0,
+        timerId = void 0,
+        lastCallTime = void 0;
+
+    var lastInvokeTime = 0;
+    var leading = false;
+    var maxing = false;
+    var trailing = true;
+
+    // Bypass `requestAnimationFrame` by explicitly setting `wait=0`.
+    var useRAF = !wait &amp;&amp; wait !== 0 &amp;&amp; typeof root.requestAnimationFrame === &#39;function&#39;;
+
+    if (typeof func != &#39;function&#39;) {
+      throw new TypeError(&#39;Expected a function&#39;);
+    }
+    wait = +wait || 0;
+    if (isObject(options)) {
+      leading = !!options.leading;
+      maxing = &#39;maxWait&#39; in options;
+      maxWait = maxing ? Math.max(+options.maxWait || 0, wait) : maxWait;
+      trailing = &#39;trailing&#39; in options ? !!options.trailing : trailing;
+    }
+
+    function invokeFunc(time) {
+      var args = lastArgs;
+      var thisArg = lastThis;
+
+      lastArgs = lastThis = undefined;
+      lastInvokeTime = time;
+      result = func.apply(thisArg, args);
+      return result;
+    }
+
+    function startTimer(pendingFunc, wait) {
+      if (useRAF) {
+        return root.requestAnimationFrame(pendingFunc);
+      }
+      return setTimeout(pendingFunc, wait);
+    }
+
+    function cancelTimer(id) {
+      if (useRAF) {
+        return root.cancelAnimationFrame(id);
+      }
+      clearTimeout(id);
+    }
+
+    function leadingEdge(time) {
+      // Reset any `maxWait` timer.
+      lastInvokeTime = time;
+      // Start the timer for the trailing edge.
+      timerId = startTimer(timerExpired, wait);
+      // Invoke the leading edge.
+      return leading ? invokeFunc(time) : result;
+    }
+
+    function remainingWait(time) {
+      var timeSinceLastCall = time - lastCallTime;
+      var timeSinceLastInvoke = time - lastInvokeTime;
+      var timeWaiting = wait - timeSinceLastCall;
+
+      return maxing ? Math.min(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
+    }
+
+    function shouldInvoke(time) {
+      var timeSinceLastCall = time - lastCallTime;
+      var timeSinceLastInvoke = time - lastInvokeTime;
+
+      // Either this is the first call, activity has stopped and we&#39;re at the
+      // trailing edge, the system time has gone backwards and we&#39;re treating
+      // it as the trailing edge, or we&#39;ve hit the `maxWait` limit.
+      return lastCallTime === undefined || timeSinceLastCall &gt;= wait || timeSinceLastCall &lt; 0 || maxing &amp;&amp; timeSinceLastInvoke &gt;= maxWait;
+    }
+
+    function timerExpired() {
+      var time = Date.now();
+      if (shouldInvoke(time)) {
+        return trailingEdge(time);
+      }
+      // Restart the timer.
+      timerId = startTimer(timerExpired, remainingWait(time));
+    }
+
+    function trailingEdge(time) {
+      timerId = undefined;
+
+      // Only invoke if we have `lastArgs` which means `func` has been
+      // debounced at least once.
+      if (trailing &amp;&amp; lastArgs) {
+        return invokeFunc(time);
+      }
+      lastArgs = lastThis = undefined;
+      return result;
+    }
+
+    function cancel() {
+      if (timerId !== undefined) {
+        cancelTimer(timerId);
+      }
+      lastInvokeTime = 0;
+      lastArgs = lastCallTime = lastThis = timerId = undefined;
+    }
+
+    function flush() {
+      return timerId === undefined ? result : trailingEdge(Date.now());
+    }
+
+    function pending() {
+      return timerId !== undefined;
+    }
+
+    function debounced() {
+      var time = Date.now();
+      var isInvoking = shouldInvoke(time);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key &lt; _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      lastArgs = args;
+      lastThis = this;
+      lastCallTime = time;
+
+      if (isInvoking) {
+        if (timerId === undefined) {
+          return leadingEdge(lastCallTime);
+        }
+        if (maxing) {
+          // Handle invocations in a tight loop.
+          timerId = startTimer(timerExpired, wait);
+          return invokeFunc(lastCallTime);
+        }
+      }
+      if (timerId === undefined) {
+        timerId = startTimer(timerExpired, wait);
+      }
+      return result;
+    }
+    debounced.cancel = cancel;
+    debounced.flush = flush;
+    debounced.pending = pending;
+    return debounced;
+  }
+
+<span id='ImageLoader-method-throttle'>  /**
+</span>   * Creates a throttled function that only invokes `func` at most once per
+   * every `wait` milliseconds (or once per browser frame). The throttled function
+   * comes with a `cancel` method to cancel delayed `func` invocations and a
+   * `flush` method to immediately invoke them. Provide `options` to indicate
+   * whether `func` should be invoked on the leading and/or trailing edge of the
+   * `wait` timeout. The `func` is invoked with the last arguments provided to the
+   * throttled function. Subsequent calls to the throttled function return the
+   * result of the last `func` invocation.
+   *
+   * **Note:** If `leading` and `trailing` options are `true`, `func` is
+   * invoked on the trailing edge of the timeout only if the throttled function
+   * is invoked more than once during the `wait` timeout.
+   *
+   * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
+   * until the next tick, similar to `setTimeout` with a timeout of `0`.
+   *
+   * If `wait` is omitted in an environment with `requestAnimationFrame`, `func`
+   * invocation will be deferred until the next frame is drawn (typically about
+   * 16ms).
+   *
+   * See [David Corbacho&#39;s article](https://css-tricks.com/debouncing-throttling-explained-examples/)
+   * for details over the differences between `throttle` and `debounce`.
+   *
+   * @since 0.1.0
+   * @category Function
+   * @param {Function} func The function to throttle.
+   * @param {number} [wait=0]
+   *  The number of milliseconds to throttle invocations to; if omitted,
+   *  `requestAnimationFrame` is used (if available).
+   * @param {Object} [options={}] The options object.
+   * @param {boolean} [options.leading=true]
+   *  Specify invoking on the leading edge of the timeout.
+   * @param {boolean} [options.trailing=true]
+   *  Specify invoking on the trailing edge of the timeout.
+   * @returns {Function} Returns the new throttled function.
+   * @example
+   *
+   * // Avoid excessively updating the position while scrolling.
+   * jQuery(window).on(&#39;scroll&#39;, throttle(updatePosition, 100))
+   *
+   * // Invoke `renewToken` when the click event is fired, but not more than once every 5 minutes.
+   * const throttled = throttle(renewToken, 300000, { &#39;trailing&#39;: false })
+   * jQuery(element).on(&#39;click&#39;, throttled)
+   *
+   * // Cancel the trailing throttled invocation.
+   * jQuery(window).on(&#39;popstate&#39;, throttled.cancel)
+   */
+  function throttle(func, wait, options) {
+    var leading = true;
+    var trailing = true;
+
+    if (typeof func != &#39;function&#39;) {
+      throw new TypeError(&#39;Expected a function&#39;);
+    }
+    if (isObject(options)) {
+      leading = &#39;leading&#39; in options ? !!options.leading : leading;
+      trailing = &#39;trailing&#39; in options ? !!options.trailing : trailing;
+    }
+    return debounce(func, wait, {
+      &#39;leading&#39;: leading,
+      &#39;maxWait&#39;: wait,
+      &#39;trailing&#39;: trailing
+    });
+  }
+
+
+
+  var lib = /*#__PURE__*/Object.freeze({
+    debounce: debounce,
+    throttle: throttle
+  });
+
+  function isStringOrNumber(val) {
+    return isString(val) || isNumber(val);
+  }
+
+<span id='ImageLoader-method-parse'>  /**
+</span>   * 解析URL查询字符串
+   * @param {String} str 要解析的url查询字符串
+   * @param {String} sep 用于界定查询字符串中的键值对的子字符串。默认为 &#39;&amp;&#39;
+   * @param {String} eq 用于界定查询字符串中的键与值的子字符串。默认为 &#39;=&#39;
+   *
+   * @example
+   *    import { qs } from &#39;zcos&#39;
+   *    qs.parse(&#39;a=1&amp;a=2&#39;); // return { a: [1, 2] }
+   *
+   * @return {Object} url查询字符串键值对对象
+   */
+  function parse() {
+    var str = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : &#39;&#39;;
+    var sep = arguments.length &gt; 1 &amp;&amp; arguments[1] !== undefined ? arguments[1] : &#39;&amp;&#39;;
+    var eq = arguments.length &gt; 2 &amp;&amp; arguments[2] !== undefined ? arguments[2] : &#39;=&#39;;
+
+    if (!isString(str)) return {};
+    str = str.replace(/^\?/, &#39;&#39;).replace(new RegExp(&#39;\\&#39; + sep + &#39;$&#39;), &#39;&#39;);
+
+    var strs = str.split(sep);
+    var obj = {};
+
+    for (var i = 0; i &lt; strs.length; i++) {
+      var arr = strs[i].split(eq);
+      var key = arr[0];
+      var value = arr[1];
+
+      if (obj[key] !== undefined) {
+        var val = obj[key];
+        if (isArray(val)) {
+          val.push(value);
+        } else {
+          obj[key] = [val, value];
+        }
+      } else {
+        obj[key] = value;
+      }
+    }
+    return obj;
+  }
+
+<span id='ImageLoader-method-stringify'>  /**
+</span>   * 序列化对象成为url查询字符串
+   * @param {Object} obj 要序列化成 URL 查询字符串的对象
+   * @param {String} sep 用于界定查询字符串中的键值对的子字符串。默认为 &#39;&amp;&#39;
+   * @param {String} eq 用于界定查询字符串中的键与值的子字符串。默认为 &#39;=&#39;
+   *
+   * @example
+   *    const o = { a: 1, b: [1, 2] }
+   *    qs.stringify(o); // return &#39;a=1&amp;b=1&amp;b=2&#39;
+   *
+   * @return {String} 序列化后的字符串
+   */
+  function stringify() {
+    var obj = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : {};
+    var sep = arguments.length &gt; 1 &amp;&amp; arguments[1] !== undefined ? arguments[1] : &#39;&amp;&#39;;
+    var eq = arguments.length &gt; 2 &amp;&amp; arguments[2] !== undefined ? arguments[2] : &#39;=&#39;;
+
+    if (!isObject(obj) &amp;&amp; !isArray(obj)) return &#39;&#39;;
+    var getPart = function getPart(key, value) {
+      return key + eq + value + sep;
+    };
+    var str = &#39;&#39;,
+        p = void 0;
+
+    for (p in obj) {
+      var val = obj[p];
+      if (isArray(val)) {
+        for (var i = 0; i &lt; val.length; i++) {
+          str += getPart(p, isStringOrNumber(val[i]) ? val[i] : &#39;&#39;);
+        }
+      } else {
+        str += getPart(p, isStringOrNumber(val) ? val : &#39;&#39;);
+      }
+    }
+    return str.replace(new RegExp(&#39;\\&#39; + sep + &#39;$&#39;), &#39;&#39;);
+  }
+
+  var qs = {
+    parse: parse,
+    stringify: stringify
+  };
+
+<span id='Url'>  /**
+</span>   * url解析类
+   * @class Url
+   * @param {String} url字符串
+   *
+   *    @example
+   *    new Url(&#39;http://a.com?a=1&#39;).search // return &#39;?a=1&#39;
+   */
+  var Url = function () {
+    function Url(url) {
+      classCallCheck(this, Url);
+
+      if (!arguments.length) throw new TypeError(&#39;Invalid URL: undefined&#39;);
+      if (!isString(url)) throw new TypeError(&#39;Invalid URL: illegal type&#39; + (typeof url === &#39;undefined&#39; ? &#39;undefined&#39; : _typeof(url)));
+      var matched = url.match(/^([A-Za-z]+:)?(\/{0,3})(?:(\w*):(\w*)@)?([0-9.\-A-Za-z]+)(?::(\d+))?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i);
+      var href = matched[0];
+      var protocol = matched[1];
+      var slash = matched[2];
+      var username = matched[3];
+      var password = matched[4];
+      var hostname = matched[5];
+      var port = matched[6];
+      var pathname = matched[7];
+      var search = matched[8];
+      var hash = matched[9];
+      var host = hostname + (port ? &#39;:&#39; : &#39;&#39;) + port;
+      var origin = protocol + slash + host;
+
+      this.href = href;
+      this.origin = origin;
+      this.protocol = protocol;
+      this.username = username;
+      this.password = password;
+      this.host = host;
+      this.hostname = hostname;
+      this.port = port;
+      this.pathname = pathname;
+      this.search = search;
+      this.searchParams = new UrlSearchParams(this.search);
+      this.hash = hash;
+
+      return this;
+    }
+
+    createClass(Url, [{
+      key: &#39;toString&#39;,
+      value: function toString() {
+        return this.href;
+      }
+    }, {
+      key: &#39;toJSON&#39;,
+      value: function toJSON() {
+        return this.href;
+      }
+    }]);
+    return Url;
+  }();
+
+<span id='UrlSearchParams'>  /**
+</span>   * url search参数解析类
+   * @class UrlSearchParams
+   * @param {String|Object} 参数字符串或解析后的对象
+   *
+   *    @example
+   *    new UrlSearchParams(&#39;?a=1&amp;b=2&#39;).append(&#39;c&#39;, 2) // return &#39;a=1&amp;b=2&amp;c=2&#39;
+   */
+  var UrlSearchParams = function () {
+    function UrlSearchParams() {
+      var param = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : undefined;
+      classCallCheck(this, UrlSearchParams);
+
+      var obj = {};
+      if (isString(param)) {
+        obj = qs.parse(param);
+      } else if (isObject(param)) {
+        obj = param;
+      }
+      this._queryObject = obj;
+    }
+
+    createClass(UrlSearchParams, [{
+      key: &#39;append&#39;,
+      value: function append(name, value) {
+        if (this._queryObject[name]) {
+          var p = this._queryObject[name];
+          if (isArray(p)) {
+            p.push(value);
+          } else {
+            this._queryObject[name] = [p, value];
+          }
+        } else {
+          this._queryObject[name] = value;
+        }
+        return this.toString();
+      }
+    }, {
+      key: &#39;delete&#39;,
+      value: function _delete(name) {
+        delete this._queryObject[name];
+        return this.toString();
+      }
+      // entries() {}
+      // forEach(fn, thisArg) {}
+
+    }, {
+      key: &#39;get&#39;,
+      value: function get$$1(name) {
+        var value = this._queryObject[name];
+        if (isArray(value)) {
+          return value[0];
+        }
+        return this._queryObject[name] || null;
+      }
+    }, {
+      key: &#39;getAll&#39;,
+      value: function getAll(name) {
+        var value = this._queryObject[name];
+        if (isArray(value)) {
+          return value;
+        }
+        return value ? [value] : [];
+      }
+    }, {
+      key: &#39;has&#39;,
+      value: function has(name) {
+        return !!this._queryObject[name];
+      }
+      // keys() {}
+
+    }, {
+      key: &#39;set&#39;,
+      value: function set$$1(name, value) {
+        this._queryObject[name] = value;
+        return this.toString();
+      }
+      // sort() {}
+
+    }, {
+      key: &#39;toString&#39;,
+      value: function toString() {
+        return qs.stringify(this._queryObject);
+      }
+    }, {
+      key: &#39;values&#39;,
+      value: function values() {}
+    }]);
+    return UrlSearchParams;
+  }();
+
+
+
+  var uri = /*#__PURE__*/Object.freeze({
+    qs: qs,
+    Url: Url,
+    UrlSearchParams: UrlSearchParams
+  });
+
+  var Z = {};
+  var addDefault = function addDefault(o) {
+    Object.keys(o).forEach(function (v) {
+      Z[v] = o[v];
+    });
+  };
+
+  addDefault(module$1);
+  addDefault(type);
+  addDefault(common);
+  addDefault(classes);
+  addDefault(lib);
+  addDefault(uri);
+  // export default Object.assign({}, module, type, common, lib, classes, uri);
+
+  exports.default = Z;
   exports.env = env;
   exports.wxPreviewImage = wxPreviewImage;
   exports.is = is;
+  exports.isString = isString;
+  exports.isNumberString = isNumberString;
+  exports.isFunction = isFunction;
+  exports.isBoolean = isBoolean;
+  exports.isNull = isNull;
+  exports.isUndefined = isUndefined;
   exports.isArray = isArray;
   exports.isEmptyArray = isEmptyArray;
   exports.isEmptyObjectLike = isEmptyObjectLike;
   exports.isObject = isObject;
+  exports.isObjectLike = isObjectLike;
   exports.isEmptyObject = isEmptyObject;
   exports.isNumber = isNumber;
   exports.isFloatNumber = isFloatNumber;
@@ -625,8 +1637,19 @@
   exports.camelCase = camelCase;
   exports.capitalize = capitalize;
   exports.random = random;
+  exports.weightedRandom = weightedRandom;
   exports.list = list;
   exports.randomItem = randomItem;
+  exports.deepClone = deepClone;
+  exports.Storager = Storager;
+  exports.ImageLoader = ImageLoader;
+  exports.Validate = Validate;
+  exports.validator = validator;
+  exports.debounce = debounce;
+  exports.throttle = throttle;
+  exports.qs = qs;
+  exports.Url = Url;
+  exports.UrlSearchParams = UrlSearchParams;
 
   Object.defineProperty(exports, &#39;__esModule&#39;, { value: true });
 

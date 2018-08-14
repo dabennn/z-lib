@@ -7,6 +7,7 @@
  * @cfg {Function} [env.isAndroid] 判断是否安卓ua
  * @cfg {Function} [env.isUC] 判断是否uc浏览器ua
  * @cfg {Function} [env.isBroswer] 判断是否是浏览器环境
+ * @cfg {Function} [env.isNode] 判断是否是nodejs环境
  */
 export default {
   isWeChat() {
@@ -25,6 +26,9 @@ export default {
     return /UCBrowser/i.test(navigator.userAgent);
   },
   isBroswer() {
-    return typeof window !== 'undefined';
+    return typeof self == 'object' && self !== null && self.Object === Object;
+  },
+  isNode() {
+    return typeof global == 'object' && global !== null && global.Object;
   },
 };
