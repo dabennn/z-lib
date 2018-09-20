@@ -1,8 +1,6 @@
 const {
   firstUpper,
   trim,
-  trimStart,
-  trimEnd,
   camelCase,
   capitalize,
 } = require('../../dist/z');
@@ -17,10 +15,13 @@ describe('common string methods', function () {
     trim('  a bcd  ').should.be.a.String().and.be.eql('a bcd');
   });
   it('remove left side space of string', function () {
-    trimStart('  a bcd  ').should.be.a.String().and.be.eql('a bcd  ');
+    trim('  a bcd  ', 'start').should.be.a.String().and.be.eql('a bcd  ');
   });
   it('remove right side space of string', function () {
-    trimEnd('  a bcd  ').should.be.a.String().and.be.eql('  a bcd');
+    trim('  a bcd  ', 'end').should.be.a.String().and.be.eql('  a bcd');
+  });
+  it('remove all space of string', function () {
+    trim('  a bcd  ', 'all').should.be.a.String().and.be.eql('abcd');
   });
   it('transform string to camelcase', function () {
     camelCase('  a-b_cd efg  ').should.be.a.String().and.be.eql('aBCdEfg');

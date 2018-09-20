@@ -1,8 +1,8 @@
-const { qs } = require('../../dist/z');
+const { querystring } = require('../../dist/z');
 const should = require('should');
 
-const stringify = qs.stringify;
-const parse = qs.parse;
+const stringify = querystring.stringify;
+const parse = querystring.parse;
 
 describe('transform uri', function () {
   it('stringify object to query string', function () {

@@ -27,11 +27,12 @@ export default {
     }),
     alias({
       resolve: ['.js', '/index.js'],
-      src: path.resolve(__dirname, '..', 'src'),
-      lib: path.resolve(__dirname, '..', 'src/lib/index.js'),
-      type: path.resolve(__dirname, '..', 'src/type/index.js'),
-      module: path.resolve(__dirname, '..', 'src/module/index.js'),
-      common: path.resolve(__dirname, '..', 'src/common/index.js'),
+      '@src': path.resolve(__dirname, '..', 'src'),
+      '@lib': path.resolve(__dirname, '..', 'src/lib'),
+      '@type': path.resolve(__dirname, '..', 'src/type'),
+      'type': path.resolve(__dirname, '..', 'src/type/type.js'),
+      '@module': path.resolve(__dirname, '..', 'src/module'),
+      '@common': path.resolve(__dirname, '..', 'src/common'),
     }),
   ],
 };
