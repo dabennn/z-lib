@@ -1,6 +1,6 @@
 import baseConfig from './rollup.config.base';
 import uglify from 'rollup-plugin-uglify';
-import { deepClone } from '../src/index';
+import { deepClone } from '../src/common/deepClone';
 
 const buildConfig = deepClone(baseConfig);
 const buildUglifyConfig = deepClone(baseConfig);

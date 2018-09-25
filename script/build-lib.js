@@ -24,22 +24,34 @@ function traversal(src, filter = () => {}) {
 
 spinner.start();
 const filesPath = traversal(srcPath, (src) => {
-  return !/(.DS_Store|LICENSE|lib\/index.js|src\/index.js|src\/root.js|constants.js)/.test(src);
+  const ignoreFiles = [
+    '.DS_Store',
+    'LICENSE',
+    'lib/index.js',
+    'src/index.js',
+    'src/root.js',
+    'constants.js',
+  ];
+  const regex = ignoreFiles.reduce((a, b) => a + '|' + b).replace(/\./g, '\\.');
+  return !new RegExp(regex).test(src);
 });
 
-filesPath.forEach((file) => {
-  const filename = file.match(/\w+\.js/)[0];
-  const writePath = path.resolve(libPath, filename);
+fs.mkdir(libPath, () => {
+  filesPath.forEach((file) => {
+    const filename = file.match(/\w+\.js/)[0];
+    const writePath = path.resolve(libPath, filename);
 
-  spinner.text = `Building File: ${filename}`;
+    spinner.text = `Building File: ${filename}`;
 
-  let content = fs.readFileSync(file, { encoding: 'utf8' });
-  content = content.replace(/(import.*?)'(.*?)'/gm, (s, s1, s2) => {
-    s2 = /\//.test(s2) ? s2.replace(/.*(\/\w*$)/, '.$1') : './' + s2;
-    return `${s1}'${s2}'`;
+    let content = fs.readFileSync(file, { encoding: 'utf8' });
+    content = content.replace(/(import.*?)'(.*?)'/gm, (s, s1, s2) => {
+      s2 = /\//.test(s2) ? s2.replace(/.*(\/\w*$)/, '.$1') : './' + s2;
+      return `${s1}'${s2}'`;
+    });
+
+    fs.writeFileSync(writePath, content, { encoding: 'utf8' });
   });
-
-  fs.writeFileSync(writePath, content, { encoding: 'utf8' });
 });
+
 
 spinner.stop();

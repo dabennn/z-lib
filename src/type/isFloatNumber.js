@@ -1,4 +1,4 @@
-import { isNumber } from 'type';
+import { isNumber } from '../type/type';
 
 /**
  * 是否是浮点数
@@ -6,8 +6,6 @@ import { isNumber } from 'type';
  * @param    {*}                   num  The value to check.
  * @return   {Boolean}             'true' if the value is floatNumber, else 'false'.
  */
-function isFloatNumber(num) {
+export function isFloatNumber(num) {
   return isNumber(num) && num !== parseInt(num, 10);
 };
-
-export default isFloatNumber;

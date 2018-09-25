@@ -1,6 +1,6 @@
-import { isArray } from 'type';
-import isEmptyArray from '../type/isEmptyArray';
-import random from './random';
+import { isArray } from '../type/type';
+import { isEmptyArray } from '../type/isEmptyArray';
+import { random } from './random';
 
 /**
  * 随机返回数组中的一项
@@ -8,7 +8,7 @@ import random from './random';
  * @param    {Array}                   arr  an array
  * @return   {*}                            random item of array
  */
-function randomItem(arr = []) {
+export function randomItem(arr = []) {
   if (!isArray(arr)) {
     throw new TypeError('Expected an Array');
   }
@@ -17,5 +17,3 @@ function randomItem(arr = []) {
   }
   return arr[random(arr.length - 1, true)];
 };
-
-export default randomItem;

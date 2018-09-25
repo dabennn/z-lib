@@ -41,12 +41,3 @@ export function isBoolean(o) {
  * @return   {Boolean}             'true' if the value is Array, else 'false'.
  */
 export const isArray = Array.isArray || (arr => is(arr, 'Array'));
-
-export default {
-  isString,
-  isFunction,
-  isNaN,
-  isNumber,
-  isObject,
-  isArray,
-};

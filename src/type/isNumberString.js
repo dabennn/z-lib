@@ -1,7 +1,5 @@
-import { isString } from 'type';
+import { isString } from '../type/type';
 
-function isNumberString(str) {
+export function isNumberString(str) {
   return isString(str) && /^\d+$/.test(str);
 }
-
-export default isNumberString;

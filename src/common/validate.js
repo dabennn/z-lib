@@ -1,5 +1,5 @@
-import { isFunction, isString } from 'type';
-import isObjectLike from '../type/isObjectLike';
+import { isFunction, isString } from '../type/type';
+import { isObjectLike } from '../type/isObjectLike';
 
 function typeErr(except, got) {
   return TypeError(`Except '${except}', got '${got}'`);

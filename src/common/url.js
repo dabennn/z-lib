@@ -1,5 +1,5 @@
-import { isObject, isString, isArray } from 'type';
-import qs from './querystring';
+import { isObject, isString, isArray } from '../type/type';
+import { querystring as qs } from './querystring';
 
 /**
  * url解析类

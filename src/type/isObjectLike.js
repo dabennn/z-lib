@@ -4,9 +4,7 @@
  * @param    {*}                   obj  The value to check.
  * @return   {Boolean}             'true' if value is ObjectLike, else 'false'.
  */
-function isObjectLike(obj) {
+export function isObjectLike(obj) {
   const type = typeof obj;
   return obj !== null && (type === 'object' || type === 'function');
 };
-
-export default isObjectLike;

@@ -12,7 +12,7 @@
  *      images: ['http://xxxxx.xxxx.xxx', 'http://xxx.xxxx.xxxx']
  *    })
  */
-export default function wxPreviewImage(params = {}) {
+export function wxPreviewImage(params = {}) {
   let current;
   let images = [];
 

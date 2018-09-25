@@ -1,5 +1,4 @@
 import {
-  TRIM_POSITION_BOTH,
   TRIM_POSITION_START,
   TRIM_POSITION_END,
   TRIM_POSITION_ALL,
@@ -16,7 +15,7 @@ import {
  * @param    {String}                   posi trim position
  * @return   {String}                        new string
  */
-function trim(str, posi = REGEXP_TRIM_BOTH) {
+export function trim(str, posi = REGEXP_TRIM_BOTH) {
   switch (posi) {
     case TRIM_POSITION_START:
       return str.replace(REGEXP_TRIM_START, '');
@@ -28,5 +27,3 @@ function trim(str, posi = REGEXP_TRIM_BOTH) {
       return str.replace(REGEXP_TRIM_BOTH, '');
   }
 };
-
-export default trim;

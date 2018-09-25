@@ -1,4 +1,4 @@
-import { isString, isNumber, isObject, isArray } from 'type';
+import { isString, isNumber, isObject, isArray } from '../type/type';
 
 function isStringOrNumber(val) {
   return isString(val) || isNumber(val);
@@ -72,7 +72,7 @@ function stringify(obj = {}, sep = '&', eq = '=') {
   return str.replace(new RegExp( '\\' + sep + '$'), '');
 }
 
-export default {
+export const querystring = {
   parse,
   stringify,
 };

@@ -5,7 +5,9 @@
   "main": "dist/z.js",
   "module": "src/index.js",
   "keywords": [
-    "Z"
+    "Z",
+    "util",
+    "common"
   ],
   "scripts": {
     "dev": "NODE_ENV=dev rollup -c build/rollup.config.dev.js -w",
@@ -19,9 +21,6 @@
   "license": "MIT",
   "sideEffects": false,
   "devDependencies": {
-    "@babel/cli": "^7.1.0",
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-latest": "^6.24.1",

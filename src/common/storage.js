@@ -1,4 +1,4 @@
-import { isString, isObject } from 'type';
+import { isString, isObject } from '../type/type';
 
 /**
  * 本地储存
@@ -11,7 +11,7 @@ import { isString, isObject } from 'type';
  *    store.set('a', 2);
  *    let a = store.get('a'); // 2
  */
-export default class Storager {
+export class Storager {
   constructor(key) {
     if (!isString(key)) {
       throw new TypeError('Storage Key must be String');

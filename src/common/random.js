@@ -1,4 +1,4 @@
-import { isBoolean, isNumber } from 'type';
+import { isBoolean, isNumber } from '../type/type';
 
 /**
  * 生成一定范围内的随机数
@@ -14,7 +14,7 @@ import { isBoolean, isNumber } from 'type';
  *
  * @return   {Number}
  */
-function random(start = 0, end, int = false) {
+export function random(start = 0, end, int = false) {
   if (arguments.length === 1 && isNumber(start)) {
     end = start;
     start = 0;
@@ -33,5 +33,3 @@ function random(start = 0, end, int = false) {
   }
   return baseRandom + start;
 };
-
-export default random;

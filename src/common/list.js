@@ -1,4 +1,4 @@
-import { isFunction, isNumber } from 'type';
+import { isFunction, isNumber } from '../type/type';
 
 /**
  * 列表快速生成
@@ -7,7 +7,7 @@ import { isFunction, isNumber } from 'type';
  * @param    {Function|Number}          fn     a function to generate list item. if is Number, array will fill with it.
  * @return   {Array}                           new array
  */
-function list(length = 0, fn = () => {}) {
+export function list(length = 0, fn = () => {}) {
   if (isNumber(fn)) {
     fn = Function(`return ${fn}`);
   }
@@ -16,5 +16,3 @@ function list(length = 0, fn = () => {}) {
   }
   return Array.from(Array(length), fn);
 };
-
-export default list;
