@@ -1,5 +1,5 @@
-import isNaN from './isNaN.js';
-import type from './type.js';
+import isNaN from './isNaN';
+import type from './type';
 
 /**
  * 是否数字

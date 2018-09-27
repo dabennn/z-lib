@@ -1,6 +1,6 @@
 {
   "name": "zcos",
-  "version": "0.2.0",
+  "version": "0.2.1-beta",
   "description": "a common methods lib",
   "main": "dist/z.js",
   "module": "src/index.js",
@@ -14,7 +14,7 @@
     "docs": "jsduck dist/z.js --output docs",
     "build": "NODE_ENV=prod rollup -c build/rollup.config.build.js",
     "build:lib": "node script/build-lib.js",
-    "test": "NODE_ENV=test mocha --compilers js:babel-register -b --recursive",
+    "test": "NODE_ENV=test mocha -b --recursive",
     "test:dev": "NODE_ENV=test mocha -w -b --recursive"
   },
   "author": "daben",
@@ -34,9 +34,5 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
     "should": "^13.2.1"
-  },
-  "dependencies": {
-    "@babel/polyfill": "^7.0.0",
-    "tickjs": "0.0.6"
   }
 }

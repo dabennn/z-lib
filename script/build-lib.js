@@ -24,7 +24,7 @@ fs.mkdir(libPath, () => {
 
     let content = fs.readFileSync(file, { encoding: 'utf8' });
     content = content.replace(/(from\s)'(.*?)'/gm, (s, s1, s2) => {
-      s2 = /\//.test(s2) ? s2.replace(/.*(\/\w*$)/, '.$1') : './' + s2;
+      s2 = /\//.test(s2) ? s2.replace(/.*(\/\w*)(\.js)?$/, '.$1.js') : './' + s2 + '.js';
       return `${s1}'${s2}'`;
     });
 
