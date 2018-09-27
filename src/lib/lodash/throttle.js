@@ -1,5 +1,5 @@
-import { debounce } from './debounce'
-import { isObject } from '../../type/type'
+import debounce from './debounce'
+import isObject from '../../type/isObject'
 
 /**
  * Creates a throttled function that only invokes `func` at most once per
@@ -49,7 +49,7 @@ import { isObject } from '../../type/type'
  * // Cancel the trailing throttled invocation.
  * jQuery(window).on('popstate', throttled.cancel)
  */
-export function throttle(func, wait, options) {
+export default function throttle(func, wait, options) {
   let leading = true
   let trailing = true
 

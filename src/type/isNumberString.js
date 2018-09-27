@@ -1,5 +1,9 @@
-import { isString } from '../type/type';
+import isString from './isString';
 
-export function isNumberString(str) {
+/**
+ * 是否数字字符串
+ * @param {*} str value to check
+ */
+export default function isNumberString(str) {
   return isString(str) && /^\d+$/.test(str);
 }

@@ -1,5 +1,6 @@
-import { isObject, isArray } from '../type/type';
-import { isObjectLike } from '../type/isObjectLike';
+import isArray from '../type/isArray';
+import isObject from '../type/isObject';
+import isObjectLike from '../type/isObjectLike';
 
 const objList = [];
 
@@ -27,7 +28,7 @@ function copyObjectLike(value) {
  *
  * @return {*} 新的对象或数组，非{}、[]数据原样返回
  */
-export function deepClone(value) {
+export default function deepClone(value) {
   if (!isObjectLike(value)) return value;
   if (isArray(value) || isObject(value)) {
     return copyObjectLike(value);

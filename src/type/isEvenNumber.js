@@ -1,4 +1,4 @@
-import { isNumber } from '../type/type';
+import isNumber from './isNumber';
 
 /**
  * 是否是偶数
@@ -6,6 +6,6 @@ import { isNumber } from '../type/type';
  * @param    {*}                   num  The value to check.
  * @return   {Boolean}             'true' if the value is evenNumber, else 'false'.
  */
-export function isEvenNumber(num) {
+export default function isEvenNumber(num) {
   return isNumber(num) && !(num % 2);
 };

@@ -1,5 +1,7 @@
-import { isObject, isString, isArray } from '../type/type';
-import { querystring as qs } from './querystring';
+import isObject from '../type/isObject';
+import isString from '../type/isString';
+import isArray from '../type/isArray';
+import qs from './querystring';
 
 /**
  * url解析类
@@ -9,7 +11,7 @@ import { querystring as qs } from './querystring';
  *    @example
  *    new Url('http://a.com?a=1').search // return '?a=1'
  */
-export class Url {
+export default class Url {
   constructor(url) {
     if (!arguments.length) throw new TypeError('Invalid URL: undefined');
     if (!isString(url))

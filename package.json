@@ -14,8 +14,8 @@
     "docs": "jsduck dist/z.js --output docs",
     "build": "NODE_ENV=prod rollup -c build/rollup.config.build.js",
     "build:lib": "node script/build-lib.js",
-    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha -b --recursive",
-    "test:dev": "NODE_ENV=test ./node_modules/mocha/bin/mocha -w -b --recursive"
+    "test": "NODE_ENV=test mocha --compilers js:babel-register -b --recursive",
+    "test:dev": "NODE_ENV=test mocha -w -b --recursive"
   },
   "author": "daben",
   "license": "MIT",
@@ -23,7 +23,9 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-latest": "^6.24.1",
+    "babel-register": "^6.26.0",
     "mocha": "^5.1.1",
     "ora": "^3.0.0",
     "rollup-plugin-alias": "^1.4.0",

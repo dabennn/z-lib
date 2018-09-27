@@ -4,6 +4,6 @@
  * @param    {String}                   str  string to handle
  * @return   {String}                        new string
  */
-export function firstUpper(str) {
+export default function firstUpper(str) {
   return str.replace(/^[a-zA-Z]/, s => s.toUpperCase());
 };

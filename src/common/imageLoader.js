@@ -1,9 +1,7 @@
-import {
-  isObject,
-  isArray,
-  isString,
-  isFunction,
-} from '../type/type';
+import isObject from '../type/isObject';
+import isArray from '../type/isArray';
+import isString from '../type/isString';
+import isFunction from '../type/isFunction';
 
 /**
  * 图片加载器
@@ -27,7 +25,7 @@ import {
  *    });
  *    loader.load();
  */
-export class ImageLoader {
+export default class ImageLoader {
   constructor(...args) {
     this._loading = false;
     this._index = 0;

@@ -15,7 +15,7 @@ import {
  * @param    {String}                   posi trim position
  * @return   {String}                        new string
  */
-export function trim(str, posi = REGEXP_TRIM_BOTH) {
+export default function trim(str, posi = REGEXP_TRIM_BOTH) {
   switch (posi) {
     case TRIM_POSITION_START:
       return str.replace(REGEXP_TRIM_START, '');

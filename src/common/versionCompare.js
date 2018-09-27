@@ -5,7 +5,7 @@
  * @param {String} v2              版本号
  * @return {boolean}
  */
-export function versionCompare(v1, symbol, v2) {
+export default function versionCompare(v1, symbol, v2) {
   if ('> >= < <= ='.indexOf(symbol) === -1) {
     throw new Error('Invalid symbol');
   }

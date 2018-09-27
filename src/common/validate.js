@@ -1,5 +1,6 @@
-import { isFunction, isString } from '../type/type';
-import { isObjectLike } from '../type/isObjectLike';
+import isFunction from '../type/isFunction';
+import isString from '../type/isString';
+import isObjectLike from '../type/isObjectLike';
 
 function typeErr(except, got) {
   return TypeError(`Except '${except}', got '${got}'`);
@@ -41,7 +42,7 @@ const rulesCache = {};
  * @method register 注册验证函数
  * @method done 返回验证结果
  */
-export class Validate {
+export default class Validate {
   constructor(value) {
     this.value = value;
     this.rules = rulesCache;

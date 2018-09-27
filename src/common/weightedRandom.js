@@ -1,4 +1,5 @@
-import { isArray, isObject } from '../type/type';
+import isArray from '../type/isArray';
+import isObject from '../type/isObject';
 
 /**
  * 生成加权随机数
@@ -10,7 +11,7 @@ import { isArray, isObject } from '../type/type';
  *
  * @return {Number|String} 返回一个数组下标或对象的键
  */
-export function weightedRandom(weights) {
+export default function weightedRandom(weights) {
   if (!isArray(weights) && !isObject(weights)) {
     throw TypeError('Invalid type of ' + weights + ',must be Array or Object');
   }

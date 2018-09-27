@@ -1,4 +1,4 @@
-import { isObject } from '../../type/type'
+import isObject from '../../type/isObject'
 import root from '../../root'
 
 /**
@@ -62,7 +62,7 @@ import root from '../../root'
  * // Check for pending invocations.
  * const status = debounced.pending() ? "Pending..." : "Ready"
  */
-export function debounce(func, wait, options) {
+export default function debounce(func, wait, options) {
   let lastArgs,
     lastThis,
     maxWait,

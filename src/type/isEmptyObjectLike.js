@@ -4,7 +4,7 @@
  * @param    {*}                   obj  The value to check.
  * @return   {Boolean}             'true' if value is emptyObjectLike, else 'false'.
  */
-export function isEmptyObjectLike(obj) {
+export default function isEmptyObjectLike(obj) {
   if (typeof obj !== 'object' || obj === null) {
     return false;
   }

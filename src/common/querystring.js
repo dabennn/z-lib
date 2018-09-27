@@ -1,4 +1,7 @@
-import { isString, isNumber, isObject, isArray } from '../type/type';
+import isString from '../type/isString';
+import isNumber from '../type/isNumber';
+import isObject from '../type/isObject';
+import isArray from '../type/isArray';
 
 function isStringOrNumber(val) {
   return isString(val) || isNumber(val);
@@ -11,7 +14,7 @@ function isStringOrNumber(val) {
  * @param {String} eq 用于界定查询字符串中的键与值的子字符串。默认为 '='
  *
  * @example
- *    import { qs } from 'zcos'
+ *    import { querystring as qs } from 'zcos'
  *    qs.parse('a=1&a=2'); // return { a: [1, 2] }
  *
  * @return {Object} url查询字符串键值对对象
@@ -72,7 +75,7 @@ function stringify(obj = {}, sep = '&', eq = '=') {
   return str.replace(new RegExp( '\\' + sep + '$'), '');
 }
 
-export const querystring = {
+export default {
   parse,
   stringify,
 };
