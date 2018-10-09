@@ -32,6 +32,7 @@ export { default as versionCompare } from './common/versionCompare';
 export { default as list } from './common/list';
 export { default as querystring } from './common/querystring';
 export { default as deepClone } from './common/deepClone';
+export { default as get } from './common/get';
 
 // export module methods
 export { default as env } from './module/env';

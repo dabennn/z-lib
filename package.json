@@ -17,6 +17,9 @@
     "test": "NODE_ENV=test mocha -b --recursive",
     "test:dev": "NODE_ENV=test mocha -w -b --recursive"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "daben",
   "license": "MIT",
   "sideEffects": false,

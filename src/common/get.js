@@ -1,3 +1,10 @@
+import isSymbol from '../type/isSymbol';
+
+function toKey(value) {
+  if (typeof value === 'string' || isSymbol(value)) return value;
+  return `${value}`;
+}
+
 /**
  * 链式取值
  * @param {Object} obj 数据源
@@ -14,7 +21,7 @@ export default function get(obj, props, def) {
     const prop = props[i];
     if (prop === '') continue;
     if (ret === undefined) return def;
-    ret = ret[prop];
+    ret = ret[toKey(prop)];
   }
 
   return ret || def;
