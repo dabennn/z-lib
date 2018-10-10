@@ -5,6 +5,7 @@ const { traversal } = require('./util.js');
 const { IGNORE_FILES } = require('./config');
 const srcPath = path.resolve(__dirname, '../src');
 const libPath = path.resolve(__dirname, '..', 'lib');
+let count = 0;
 
 // const spinner = ora('Start Building...');
 
@@ -21,6 +22,7 @@ fs.mkdir(libPath, () => {
     const writePath = path.resolve(libPath, filename);
 
     // spinner.text = `Building File: ${filename}`;
+    count++;
     console.log(`Building File: ${filename}`);
 
     let content = fs.readFileSync(file, { encoding: 'utf8' });
@@ -31,6 +33,7 @@ fs.mkdir(libPath, () => {
 
     fs.writeFileSync(writePath, content, { encoding: 'utf8' });
   });
+  console.log(`\nTotal Number Of Building: ${count} files`);
 });
 
-spinner.stop();
+// spinner.stop();
