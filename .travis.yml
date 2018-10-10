@@ -6,3 +6,8 @@ node_js:
 notifications:
   email:
     - dabennn@126.com
+    - dabennn07@gmail.com
+branches:
+  only:
+    - master
+    - dev
