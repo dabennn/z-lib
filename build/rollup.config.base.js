@@ -11,19 +11,16 @@ export default {
     format: 'umd',
     name: 'Z',
     exports: 'named',
-    globals: {
-      Tick: 'Tick',
-    },
+    // globals: {
+    //   Tick: 'Tick',
+    // },
   },
-  external: ['tickjs'],
+  // external: ['tickjs'],
   plugins: [
     resolve(),
     commonjs(),
     babel({
       exclude: 'node_modules/**',
-      plugins: [
-        'external-helpers'
-      ],
     }),
     alias({
       resolve: ['.js', '/index.js'],

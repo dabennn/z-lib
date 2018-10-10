@@ -1,7 +1,7 @@
-const { versionCompare } = require('../../dist/z');
+import versionCompare from '../../src/common/versionCompare.js';
 const should = require('should');
 
-describe('compare version', function () {
+describe(`test method 'versionCompare'`, function () {
   it('v1 is greater than v2', function () {
     versionCompare('1', '>', '1').should.be.false();
     versionCompare('1', '>', '1.0').should.be.false();

@@ -1,4 +1,4 @@
-const { get } = require('../../dist/z');
+import get from '../../src/common/get.js';
 const should = require('should');
 
 const user = {
@@ -14,7 +14,7 @@ const user = {
   },
 };
 
-describe('chaining get props from object', function () {
+describe(`test method 'get'`, function () {
   it('use string expression', function () {
     get(user, 'name').should.be.String().and.be.equal('nick');
     get(user, 'age').should.be.Number().and.be.equal(18);

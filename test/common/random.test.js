@@ -1,4 +1,4 @@
-const { random } = require('../../dist/z');
+import random from '../../src/common/random.js';
 const should = require('should');
 
 should.use(function(should, Assertion) {
@@ -19,8 +19,8 @@ should.use(function(should, Assertion) {
  })
 })
 
-describe('common number methods', function () {
-  it('get a random number', function () {
+describe(`test method 'random'`, function () {
+  it('invoke 500 times and all in range', function () {
     for (let i = 0; i < 500; i++) {
       random(7).should.be.aboveOrEqual(0).and.be.below(7).and.be.a.float();
       random(7, true).should.be.aboveOrEqual(0).and.be.belowOrEqual(7).and.be.a.int();

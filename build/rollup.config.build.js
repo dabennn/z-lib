@@ -11,34 +11,34 @@ buildUglifyConfig.output = [
     format: 'umd',
     name: 'Z',
     exports: 'named',
-    globals: {
-      Tick: 'Tick',
-    },
+    // globals: {
+    //   Tick: 'Tick',
+    // },
   },
   {
     file: 'dist/z.cjs.min.js',
     format: 'cjs',
     exports: 'named',
-    globals: {
-      Tick: 'Tick',
-    },
+    // globals: {
+    //   Tick: 'Tick',
+    // },
   },
   {
     file: 'dist/z.iife.min.js',
     format: 'iife',
     name: 'Z',
     exports: 'named',
-    globals: {
-      Tick: 'Tick',
-    },
+    // globals: {
+    //   Tick: 'Tick',
+    // },
   },
   {
     file: 'dist/z.esm.min.js',
     format: 'es',
     exports: 'named',
-    globals: {
-      Tick: 'Tick',
-    },
+    // globals: {
+    //   Tick: 'Tick',
+    // },
   }
 ];
 buildUglifyConfig.plugins.push(uglify());

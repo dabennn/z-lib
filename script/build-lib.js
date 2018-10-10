@@ -1,14 +1,14 @@
 const fs = require('fs');
 const path = require('path');
-const ora = require('ora');
+// const ora = require('ora');
 const { traversal } = require('./util.js');
 const { IGNORE_FILES } = require('./config');
 const srcPath = path.resolve(__dirname, '../src');
 const libPath = path.resolve(__dirname, '..', 'lib');
 
-const spinner = ora('Start Building...');
+// const spinner = ora('Start Building...');
 
-spinner.start();
+// spinner.start();
 
 const filesPath = traversal(srcPath, (src) => {
   const regex = IGNORE_FILES.reduce((a, b) => a + '|' + b).replace(/\./g, '\\.');
@@ -20,7 +20,8 @@ fs.mkdir(libPath, () => {
     const filename = file.match(/\w+\.js/)[0];
     const writePath = path.resolve(libPath, filename);
 
-    spinner.text = `Building File: ${filename}`;
+    // spinner.text = `Building File: ${filename}`;
+    console.log(`Building File: ${filename}`);
 
     let content = fs.readFileSync(file, { encoding: 'utf8' });
     content = content.replace(/(from\s)'(.*?)'/gm, (s, s1, s2) => {

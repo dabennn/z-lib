@@ -1,10 +1,10 @@
-const { querystring } = require('../../dist/z');
+import querystring from '../../src/common/querystring.js';
 const should = require('should');
 
 const stringify = querystring.stringify;
 const parse = querystring.parse;
 
-describe('transform uri', function () {
+describe(`test method 'querystring'`, function () {
   it('stringify object to query string', function () {
     const a = [1, 2];
     a.b = 'abc';
