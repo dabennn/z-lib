@@ -1,4 +1,4 @@
-const { Url, UrlSearchParams } = require('../../dist/z');
+import Url, { UrlSearchParams } from '../../src/common/url.js';
 const should = require('should');
 
 describe(`test class 'Url' and 'UrlSearchParams'`, function () {
