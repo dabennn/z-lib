@@ -1,4 +1,5 @@
-# zcos
+# zcos [![Build Status](https://www.travis-ci.org/dabennn/z-lib.svg?branch=master)](https://www.travis-ci.org/dabennn/z-lib)
+
 公共方法集合
 
 ### 安装
