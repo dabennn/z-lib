@@ -4,10 +4,18 @@ node_js:
   - "7"
   - "8"
 notifications:
-  email:
-    - dabennn@126.com
-    - dabennn07@gmail.com
+  email: dabennn07@gmail.com
 branches:
   only:
     - master
     - dev
+deploy:
+  provider: npm
+  email: dabennn07@gmail.com
+  api_key:
+    secure: $API_TOKEN
+  on:
+    skip_cleanup: true
+    tags: true
+    repo: dabennn/z-lib
+    condition: "$TRAVIS_BRANCH = master"

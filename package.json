@@ -1,6 +1,6 @@
 {
   "name": "zcos",
-  "version": "0.2.1-beta",
+  "version": "0.3.0",
   "description": "a common methods lib",
   "main": "dist/z.js",
   "module": "src/index.js",
@@ -13,8 +13,8 @@
     "dev": "NODE_ENV=dev rollup -c build/rollup.config.dev.js -w",
     "build": "NODE_ENV=prod rollup -c build/rollup.config.build.js && npm run build:lib",
     "build:lib": "node script/build-lib.js",
-    "test": "NODE_ENV=test mocha --compilers js:@babel/register -b --recursive",
-    "test:dev": "NODE_ENV=test mocha -w -b --recursive"
+    "test": "NODE_ENV=test mocha --require @babel/register -b --recursive",
+    "test:dev": "NODE_ENV=test mocha --require @babel/register -w -b --recursive"
   },
   "publishConfig": {
     "access": "public"
