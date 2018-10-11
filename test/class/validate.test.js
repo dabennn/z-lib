@@ -1,7 +1,7 @@
-const { Validate, validator } = require('../../dist/z');
+import Validate, { validator } from '../../src/common/validate.js';
 const should = require('should');
 
-describe('test class validator', function () {
+describe(`test class 'Validate' and method 'validator'`, function () {
   it('validate String \'chan\'', function () {
     validator('chan').minLength('5').maxLength('7').done().should.be.Object().and.be.eql({
       name: 'minLength',

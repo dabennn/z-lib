@@ -11,27 +11,25 @@ export default {
     format: 'umd',
     name: 'Z',
     exports: 'named',
-    globals: {
-      Tick: 'Tick',
-    },
+    // globals: {
+    //   Tick: 'Tick',
+    // },
   },
-  external: ['tickjs'],
+  // external: ['tickjs'],
   plugins: [
     resolve(),
     commonjs(),
     babel({
       exclude: 'node_modules/**',
-      plugins: [
-        'external-helpers'
-      ],
     }),
     alias({
       resolve: ['.js', '/index.js'],
-      src: path.resolve(__dirname, '..', 'src'),
-      lib: path.resolve(__dirname, '..', 'src/lib/index.js'),
-      type: path.resolve(__dirname, '..', 'src/type/index.js'),
-      module: path.resolve(__dirname, '..', 'src/module/index.js'),
-      common: path.resolve(__dirname, '..', 'src/common/index.js'),
+      '@src': path.resolve(__dirname, '..', 'src'),
+      '@lib': path.resolve(__dirname, '..', 'src/lib'),
+      'type': path.resolve(__dirname, '..', 'src/type/type'),
+      '@type': path.resolve(__dirname, '..', 'src/type'),
+      '@module': path.resolve(__dirname, '..', 'src/module'),
+      '@common': path.resolve(__dirname, '..', 'src/common'),
     }),
   ],
 };

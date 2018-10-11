@@ -1,30 +1,43 @@
-import * as module from './module/index';
-import * as type from './type/index';
-import * as common from './common/index';
-import * as classes from './class/index';
-import * as lib from './lib/index';
-import * as uri from './uri/index';
+// export type methods
+export { default as isArray } from './type/isArray';
+export { default as isBoolean } from './type/isBoolean';
+export { default as isEmptyArray } from './type/isEmptyArray';
+export { default as isEmptyObject } from './type/isEmptyObject';
+export { default as isEmptyObjectLike } from './type/isEmptyObjectLike';
+export { default as isEvenNumber } from './type/isEvenNumber';
+export { default as isFloatNumber } from './type/isFloatNumber';
+export { default as isFunction } from './type/isFunction';
+export { default as isNaN } from './type/isNaN';
+export { default as isNumber } from './type/isNumber';
+export { default as isNumberString } from './type/isNumberString';
+export { default as isObject } from './type/isObject';
+export { default as isObjectLike } from './type/isObjectLike';
+export { default as isString } from './type/isString';
+export { default as type } from './type/type';
 
-export * from './module/index';
-export * from './type/index';
-export * from './common/index';
-export * from './class/index';
-export * from './lib/index';
-export * from './uri/index';
+// export common methods
+export { default as Validate, validator } from './common/validate';
+export { default as Url, UrlSearchParams } from './common/url';
+export { default as Storager } from './common/storage';
+export { default as ImageLoader } from './common/imageLoader';
 
-const Z = {};
-const addDefault = (o) => {
-  Object.keys(o).forEach((v) => {
-    Z[v] = o[v];
-  });
-};
+export { default as camelCase } from './common/camelCase';
+export { default as capitalize } from './common/capitalize';
+export { default as firstUpper } from './common/firstUpper';
+export { default as random } from './common/random';
+export { default as trim } from './common/trim';
+export { default as randomItem } from './common/randomItem';
+export { default as weightedRandom } from './common/weightedRandom';
+export { default as versionCompare } from './common/versionCompare';
+export { default as list } from './common/list';
+export { default as querystring } from './common/querystring';
+export { default as deepClone } from './common/deepClone';
+export { default as get } from './common/get';
 
-addDefault(module);
-addDefault(type);
-addDefault(common);
-addDefault(classes);
-addDefault(lib);
-addDefault(uri);
+// export module methods
+export { default as env } from './module/env';
+export { default as wxPreviewImage } from './module/wxPreviewImage';
 
-export default Z;
-// export default Object.assign({}, module, type, common, lib, classes, uri);
+// export lib methods
+export { default as debounce } from './lib/lodash/debounce';
+export { default as throttle } from './lib/lodash/throttle';
