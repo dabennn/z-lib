@@ -12,10 +12,10 @@ notifications:
 deploy:
   provider: npm
   email: dabennn07@gmail.com
+  skip_cleanup: true
   api_key:
     secure: $API_TOKEN
   on:
-    skip_cleanup: true
     tags: true
     repo: dabennn/z-lib
     condition: "$TRAVIS_BRANCH = master"
