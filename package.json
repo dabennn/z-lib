@@ -10,11 +10,11 @@
     "common"
   ],
   "scripts": {
-    "dev": "NODE_ENV=dev rollup -c build/rollup.config.dev.js -w",
-    "build": "NODE_ENV=prod rollup -c build/rollup.config.build.js && npm run build:lib",
+    "dev": "rollup -c build/rollup.config.dev.js -w",
+    "build": "rollup -c build/rollup.config.build.js && npm run build:lib",
     "build:lib": "node script/build-lib.js",
-    "test": "NODE_ENV=test mocha --require @babel/register -b --recursive",
-    "test:dev": "NODE_ENV=test mocha --require @babel/register -w -b --recursive"
+    "test": "mocha --require @babel/register -b --recursive",
+    "test:dev": "mocha --require @babel/register -w -b --recursive"
   },
   "publishConfig": {
     "access": "public"

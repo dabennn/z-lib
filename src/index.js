@@ -33,6 +33,7 @@ export { default as list } from './common/list';
 export { default as querystring } from './common/querystring';
 export { default as deepClone } from './common/deepClone';
 export { default as get } from './common/get';
+export { default as splice } from './common/splice';
 
 // export module methods
 export { default as env } from './module/env';
