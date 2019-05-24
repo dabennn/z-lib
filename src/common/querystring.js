@@ -1,10 +1,9 @@
 import isString from '../type/isString';
-import isNumber from '../type/isNumber';
 import isObject from '../type/isObject';
 import isArray from '../type/isArray';
 
-function isStringOrNumber(val) {
-  return isString(val) || isNumber(val);
+function toStr(val) {
+  return /\[.*\]/.test(`${val}`) ? '' : `${val}`
 }
 
 /**
@@ -14,35 +13,29 @@ function isStringOrNumber(val) {
  * @param {String} eq 用于界定查询字符串中的键与值的子字符串。默认为 '='
  *
  * @example
- *    import { querystring as qs } from 'zcos'
  *    qs.parse('a=1&a=2'); // return { a: [1, 2] }
  *
  * @return {Object} url查询字符串键值对对象
  */
-function parse(str = '', sep = '&', eq = '=') {
-  if (!isString(str)) return {};
-  str = str.replace(/^\?/, '').replace(new RegExp( '\\' + sep + '$'), '');
-
-  const strs = str.split(sep);
-  let obj = {};
-
-  for (let i = 0; i < strs.length; i++) {
-    const arr = strs[i].split(eq);
-    const key = arr[0];
-    const value = arr[1];
-
-    if (obj[key] !== undefined) {
-      const val = obj[key];
+function parse(val = '', sep = '&', eq = '=') {
+  if (!isString(val)) return {}
+  const reduceFn = (acc, cur) => {
+    const [key, value] = cur.split(eq)
+    if (acc[key] !== undefined) {
+      const val = acc[key]
       if (isArray(val)) {
-        val.push(value);
+        val.push(value)
       } else {
-        obj[key] = [val, value];
+        acc[key] = [val, value]
       }
     } else {
-      obj[key] = value;
+      acc[key] = value
     }
+    return acc
   }
-  return obj;
+  const str = val.replace(/^\?/, '').replace(new RegExp( '\\' + sep + '$'), '')
+  const strs = str.split(sep)
+  return strs.reduce(reduceFn, {})
 }
 
 /**
@@ -58,24 +51,20 @@ function parse(str = '', sep = '&', eq = '=') {
  * @return {String} 序列化后的字符串
  */
 function stringify(obj = {}, sep = '&', eq = '=') {
-  if (!isObject(obj) && !isArray(obj)) return '';
-  const getPart = (key, value) => key + eq + value + sep;
-  let str = '', p;
-
-  for (p in obj) {
-    const val = obj[p];
+  if (!isObject(obj) && !isArray(obj)) return ''
+  const getPart = (key, value) => key + eq + value + sep
+  const reduceFn = (acc, cur) => {
+    const val = obj[cur]
     if (isArray(val)) {
-      for (let i = 0; i < val.length; i++) {
-        str += getPart(p, isStringOrNumber(val[i]) ? val[i] : '');
-      }
-    } else {
-      str += getPart(p, isStringOrNumber(val) ? val : '');
+      return acc + val.reduce((_acc, _cur) => _acc + getPart(cur, toStr(_cur)), '')
     }
+    return acc + getPart(cur, toStr(val))
   }
-  return str.replace(new RegExp( '\\' + sep + '$'), '');
+  const str = Object.keys(obj).reduce(reduceFn, '')
+  return str.replace(new RegExp( '\\' + sep + '$'), '')
 }
 
 export default {
   parse,
-  stringify,
-};
+  stringify
+}

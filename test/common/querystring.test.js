@@ -12,9 +12,10 @@ describe(`test method 'querystring'`, function () {
     const o = {
       a: 1,
       b: [2, 3],
+      c: true
     };
     stringify(a).should.be.String().and.be.equal('0=1&1=2&b=abc&c=');
-    stringify(o).should.be.String().and.be.equal('a=1&b=2&b=3');
+    stringify(o).should.be.String().and.be.equal('a=1&b=2&b=3&c=true');
   });
   it('parse url query to object', function () {
     const str1 = '0=1&1=2&b=abc&c=';
